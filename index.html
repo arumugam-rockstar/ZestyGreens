@@ -8,114 +8,42 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,700;1,500&family=Work+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg: #F1F4EC;
-    --panel: #FFFFFF;
-    --ink: #1F2A1D;
-    --ink-soft: #55604E;
-    --forest: #1E3A2B;
-    --forest-dark: #14261B;
-    --leaf: #5B8C3E;
-    --leaf-light: #E4EFD9;
-    --tomato: #C1440E;
-    --tomato-dark: #9C3609;
-    --carrot: #E8892B;
-    --tag: #F3E7C9;
-    --line: #D8D3C0;
+    --bg: #F1F4EC; --panel: #FFFFFF; --ink: #1F2A1D; --ink-soft: #55604E;
+    --forest: #1E3A2B; --leaf: #5B8C3E; --leaf-light: #E4EFD9;
+    --tomato: #C1440E; --tomato-dark: #9C3609; --tag: #F3E7C9; --line: #D8D3C0;
     --shadow: 0 2px 0 rgba(0,0,0,0.04), 0 8px 20px -12px rgba(20,38,27,0.25);
   }
   *{box-sizing:border-box;}
-  body{
-    margin:0;
-    background:var(--bg);
-    color:var(--ink);
-    font-family:'Work Sans', sans-serif;
-    -webkit-font-smoothing:antialiased;
-  }
-  h1,h2,h3,.display{
-    font-family:'Fraunces', serif;
-    font-weight:600;
-    letter-spacing:-0.01em;
-  }
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:'Work Sans', sans-serif; -webkit-font-smoothing:antialiased; }
+  h1,h2,h3,.display{ font-family:'Fraunces', serif; font-weight:600; letter-spacing:-0.01em; }
   .mono{ font-family:'Space Mono', monospace; }
   button{ font-family:inherit; cursor:pointer; }
 
-  /* ---------- Header ---------- */
-  header.top{
-    background: var(--forest);
-    color: #F1F4EC;
-    padding: 22px 24px 20px;
-    position: sticky; top:0; z-index: 40;
-    box-shadow: 0 6px 16px -10px rgba(0,0,0,0.5);
-  }
-  .top-inner{
-    max-width: 1080px; margin: 0 auto;
-    display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;
-  }
+  header.top{ background: var(--forest); color: #F1F4EC; padding: 22px 24px 20px; position: sticky; top:0; z-index: 40; box-shadow: 0 6px 16px -10px rgba(0,0,0,0.5); }
+  .top-inner{ max-width: 1080px; margin: 0 auto; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; }
   .brand{ display:flex; align-items:center; gap:12px; }
-  .brand-mark{
-    width:42px; height:42px; border-radius:10px;
-    background: var(--leaf);
-    display:flex; align-items:center; justify-content:center;
-    font-size:22px; transform: rotate(-4deg);
-    box-shadow: 0 3px 0 rgba(0,0,0,0.15);
-  }
+  .brand-mark{ width:42px; height:42px; border-radius:10px; background: var(--leaf); display:flex; align-items:center; justify-content:center; font-size:22px; transform: rotate(-4deg); box-shadow: 0 3px 0 rgba(0,0,0,0.15); }
   .brand h1{ margin:0; font-size:22px; color:#fff; line-height:1.1; }
-  .brand span{ display:block; font-size:11.5px; color:#B9C9AE; font-family:'Work Sans'; letter-spacing:.06em; text-transform:uppercase; margin-top:3px;}
-  nav.tabs{ display:flex; gap:6px; background:rgba(255,255,255,0.08); padding:4px; border-radius:12px; }
-  nav.tabs button{
-    border:none; background:transparent; color:#D8E4CD;
-    padding:9px 16px; border-radius:9px; font-size:14px; font-weight:600;
-    transition: all .15s ease;
-  }
-  nav.tabs button.active{ background:#fff; color:var(--forest); }
-  .cart-pill{
-    display:flex; align-items:center; gap:8px;
-    background: var(--tomato); color:#fff; border:none;
-    padding:10px 16px; border-radius: 999px; font-weight:700; font-size:14px;
-    box-shadow: var(--shadow);
-  }
-  .cart-pill .count{
-    background:rgba(255,255,255,0.25); border-radius:999px; padding:1px 8px; font-family:'Space Mono';
-  }
+  .brand span{ display:block; font-size:11.5px; color:#B9C9AE; letter-spacing:.06em; text-transform:uppercase; margin-top:3px;}
+  .cart-pill{ display:flex; align-items:center; gap:8px; background: var(--tomato); color:#fff; border:none; padding:10px 16px; border-radius: 999px; font-weight:700; font-size:14px; box-shadow: var(--shadow); }
+  .cart-pill .count{ background:rgba(255,255,255,0.25); border-radius:999px; padding:1px 8px; font-family:'Space Mono'; }
 
   main{ max-width:1080px; margin:0 auto; padding: 28px 24px 80px; }
 
-  /* ---------- Shop hero / filters ---------- */
   .hero{ display:flex; align-items:flex-end; justify-content:space-between; gap:20px; flex-wrap:wrap; margin-bottom:22px;}
   .hero h2{ font-size:30px; margin:0 0 4px; }
   .hero p{ margin:0; color:var(--ink-soft); max-width:46ch; }
   .chips{ display:flex; gap:8px; flex-wrap:wrap; }
-  .chip{
-    border:1px solid var(--line); background:var(--panel); color:var(--ink);
-    padding:7px 14px; border-radius:999px; font-size:13.5px; font-weight:600;
-  }
+  .chip{ border:1px solid var(--line); background:var(--panel); color:var(--ink); padding:7px 14px; border-radius:999px; font-size:13.5px; font-weight:600; }
   .chip.active{ background:var(--forest); color:#fff; border-color:var(--forest); }
 
-  /* ---------- Grid of crate cards ---------- */
   .grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(200px,1fr)); gap:16px; margin-top:20px; }
-  .card{
-    background: var(--panel);
-    border-radius: 14px;
-    border: 1px solid var(--line);
-    padding: 16px 14px 14px;
-    position: relative;
-    box-shadow: var(--shadow);
-    display:flex; flex-direction:column; gap:8px;
-  }
-  .card .slats{
-    position:absolute; inset:0; border-radius:14px; pointer-events:none;
-    background: repeating-linear-gradient(180deg, transparent 0 34px, rgba(30,58,43,0.05) 34px 36px);
-  }
+  .card{ background: var(--panel); border-radius: 14px; border: 1px solid var(--line); padding: 16px 14px 14px; position: relative; box-shadow: var(--shadow); display:flex; flex-direction:column; gap:8px; }
+  .card .slats{ position:absolute; inset:0; border-radius:14px; pointer-events:none; background: repeating-linear-gradient(180deg, transparent 0 34px, rgba(30,58,43,0.05) 34px 36px); }
   .emoji{ font-size:38px; line-height:1; }
   .card h3{ margin:2px 0 0; font-size:16.5px; }
   .card .unit{ color:var(--ink-soft); font-size:12.5px; margin-top:-4px;}
-  .tag{
-    align-self:flex-start;
-    background: var(--tag); border:1px dashed #C9B98A;
-    padding:3px 10px; border-radius:6px;
-    font-family:'Space Mono'; font-size:14px; font-weight:700; color:var(--tomato-dark);
-    margin-top:2px;
-  }
+  .tag{ align-self:flex-start; background: var(--tag); border:1px dashed #C9B98A; padding:3px 10px; border-radius:6px; font-family:'Space Mono'; font-size:14px; font-weight:700; color:var(--tomato-dark); margin-top:2px; }
   .stock-badge{ font-size:11.5px; font-weight:700; padding:2px 8px; border-radius:6px; align-self:flex-start; }
   .stock-ok{ background: var(--leaf-light); color:#3D6428; }
   .stock-low{ background:#FCEAD2; color:#9C5A0B; }
@@ -124,25 +52,13 @@
   .stepper{ display:flex; align-items:center; border:1px solid var(--line); border-radius:9px; overflow:hidden; }
   .stepper button{ border:none; background:#F3F5EE; width:28px; height:28px; font-size:16px; font-weight:700; color:var(--forest); }
   .stepper span{ width:28px; text-align:center; font-family:'Space Mono'; font-size:13px; }
-  .add-btn{
-    border:none; background:var(--forest); color:#fff; padding:8px 14px;
-    border-radius:9px; font-weight:700; font-size:13px; flex:1;
-  }
+  .add-btn{ border:none; background:var(--forest); color:#fff; padding:8px 14px; border-radius:9px; font-weight:700; font-size:13px; flex:1; }
   .add-btn:disabled{ background:#B9BBAF; cursor:not-allowed; }
-  .sold-stamp{
-    position:absolute; top:14px; right:-6px; background:var(--tomato); color:#fff;
-    font-size:10.5px; font-weight:700; padding:3px 10px; transform:rotate(8deg);
-    border-radius:3px; letter-spacing:.04em; box-shadow:0 2px 4px rgba(0,0,0,0.25);
-  }
+  .sold-stamp{ position:absolute; top:14px; right:-6px; background:var(--tomato); color:#fff; font-size:10.5px; font-weight:700; padding:3px 10px; transform:rotate(8deg); border-radius:3px; letter-spacing:.04em; box-shadow:0 2px 4px rgba(0,0,0,0.25); }
 
-  /* ---------- Cart drawer ---------- */
   .overlay{ position:fixed; inset:0; background:rgba(20,38,27,0.35); z-index:50; display:none; }
   .overlay.open{ display:block; }
-  .drawer{
-    position:fixed; top:0; right:-420px; width:400px; max-width:92vw; height:100%;
-    background:var(--panel); z-index:60; box-shadow:-8px 0 24px rgba(0,0,0,0.18);
-    transition: right .25s ease; display:flex; flex-direction:column;
-  }
+  .drawer{ position:fixed; top:0; right:-420px; width:400px; max-width:92vw; height:100%; background:var(--panel); z-index:60; box-shadow:-8px 0 24px rgba(0,0,0,0.18); transition: right .25s ease; display:flex; flex-direction:column; }
   .drawer.open{ right:0; }
   .drawer-head{ padding:20px 20px 14px; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; align-items:center; }
   .drawer-head h3{ margin:0; font-size:19px; }
@@ -160,93 +76,37 @@
   .total-row{ display:flex; justify-content:space-between; font-family:'Space Mono'; font-size:16px; font-weight:700; margin-bottom:14px; }
   .checkout-btn{ width:100%; border:none; background:var(--tomato); color:#fff; padding:13px; border-radius:11px; font-weight:700; font-size:15px; }
   .checkout-btn:disabled{ background:#B9BBAF; }
+  .checkout-btn.outline{ background:#fff; color:var(--forest); border:2px solid var(--forest); }
 
-  /* ---------- Checkout form ---------- */
   .form-field{ margin-bottom:12px; }
   .form-field label{ display:block; font-size:12.5px; font-weight:600; color:var(--ink-soft); margin-bottom:5px; }
-  .form-field input, .form-field textarea, .form-field select{
-    width:100%; border:1px solid var(--line); border-radius:9px; padding:10px 11px;
-    font-family:inherit; font-size:14px; background:#FBFAF5;
-  }
+  .form-field input, .form-field textarea{ width:100%; border:1px solid var(--line); border-radius:9px; padding:10px 11px; font-family:inherit; font-size:14px; background:#FBFAF5; }
   .form-field textarea{ resize:vertical; min-height:56px; }
   .back-link{ background:none; border:none; color:var(--forest); font-weight:600; font-size:13px; padding:0; margin-bottom:14px; }
 
-  .confirm-box{ text-align:center; padding:30px 10px; }
-  .confirm-box .big-emoji{ font-size:52px; }
-  .confirm-box h3{ margin:14px 0 4px; }
+  .confirm-box{ text-align:center; padding:20px 10px 10px; }
+  .confirm-box .big-emoji{ font-size:46px; }
+  .confirm-box h3{ margin:12px 0 4px; }
   .order-code{ font-family:'Space Mono'; background:var(--leaf-light); color:#3D6428; display:inline-block; padding:4px 12px; border-radius:8px; font-weight:700; margin-top:6px;}
 
-  /* ---------- Owner view ---------- */
-  .owner-gate{ max-width:360px; margin: 60px auto; background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:28px; text-align:center; box-shadow:var(--shadow);}
-  .owner-gate .lock{ font-size:36px; }
-  .owner-gate input{ margin:14px 0; text-align:center; letter-spacing:.3em; font-size:18px; }
-  .owner-gate button{ width:100%; border:none; background:var(--forest); color:#fff; padding:11px; border-radius:9px; font-weight:700; }
-  .owner-gate .hint{ font-size:11.5px; color:var(--ink-soft); margin-top:10px; }
+  .payment-box{ text-align:center; }
+  .payment-box p.sub{ color:var(--ink-soft); font-size:13.5px; margin:2px 0 16px; }
+  .qr-wrap{ background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:16px; margin-bottom:16px; }
+  .qr-wrap img{ width:180px; height:180px; border-radius:8px; }
+  .qr-wrap .upi-id{ font-family:'Space Mono'; font-size:12.5px; color:var(--ink-soft); margin-top:8px; }
+  .pay-total{ font-family:'Space Mono'; font-size:20px; font-weight:700; margin-bottom:14px; }
 
-  .section-title{ display:flex; justify-content:space-between; align-items:center; margin: 30px 0 12px; }
-  .section-title h3{ margin:0; font-size:19px; }
-  .small-btn{ border:1px solid var(--forest); background:#fff; color:var(--forest); padding:7px 13px; border-radius:8px; font-weight:700; font-size:13px; }
-  .small-btn.solid{ background:var(--forest); color:#fff; }
+  .status-panel{ background:var(--leaf-light); border-radius:12px; padding:14px 16px; margin-top:14px; text-align:left; }
+  .status-panel .row{ display:flex; justify-content:space-between; font-size:13.5px; padding:4px 0; }
+  .status-panel .row b{ color:var(--forest); }
+  .thanks-banner{ background:var(--leaf); color:#fff; border-radius:10px; padding:12px 14px; font-weight:700; font-size:13.5px; margin-top:12px; text-align:center; }
+  .awaiting-banner{ background:var(--tag); color:var(--tomato-dark); border-radius:10px; padding:10px 14px; font-weight:600; font-size:12.5px; margin-top:12px; text-align:center; }
 
-  table{ width:100%; border-collapse:collapse; background:var(--panel); border-radius:12px; overflow:hidden; box-shadow:var(--shadow); }
-  thead th{ text-align:left; background:var(--forest); color:#fff; font-size:12px; text-transform:uppercase; letter-spacing:.05em; padding:10px 12px; }
-  tbody td{ padding:10px 12px; border-bottom:1px solid #EFEDE3; font-size:14px; vertical-align:middle; }
-  tbody tr:last-child td{ border-bottom:none; }
-  tbody input, tbody select{ border:1px solid var(--line); border-radius:6px; padding:5px 7px; font-size:13px; font-family:'Space Mono'; width:76px; }
-  .icell{ display:flex; align-items:center; gap:8px; }
-  .icell .emoji{ font-size:22px; }
-  .del-btn{ border:none; background:none; color:var(--tomato); font-size:13px; font-weight:700; }
-  .status-select{ font-family:'Work Sans'; width:auto !important; padding:5px 8px !important; font-weight:600; }
-
-  .add-item-card{ background:var(--panel); border:1px dashed var(--line); border-radius:12px; padding:14px; display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end; }
-  .add-item-card .form-field{ margin:0; flex:1; min-width:110px; }
-
-  .order-card{ background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:14px 16px; margin-bottom:12px; box-shadow:var(--shadow); }
-  .order-card .oc-top{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; }
-  .order-card .oc-code{ font-family:'Space Mono'; font-weight:700; }
-  .order-card .oc-items{ color:var(--ink-soft); font-size:13.5px; margin-top:6px; }
-  .badge{ font-size:11px; font-weight:700; padding:3px 10px; border-radius:999px; }
-  .badge-new{ background:#FCEAD2; color:#9C5A0B; }
-  .badge-preparing{ background:#DDEBFB; color:#1B5FA8; }
-  .badge-ready{ background:var(--leaf-light); color:#3D6428; }
-  .badge-completed{ background:#EFEDE3; color:var(--ink-soft); }
-
-  .toast{
-    position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(20px);
-    background:var(--forest); color:#fff; padding:12px 20px; border-radius:10px;
-    font-size:14px; font-weight:600; opacity:0; transition:all .25s ease; z-index:80; pointer-events:none;
-    box-shadow:0 8px 20px rgba(0,0,0,0.25);
-  }
+  .toast{ position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(20px); background:var(--forest); color:#fff; padding:12px 20px; border-radius:10px; font-size:14px; font-weight:600; opacity:0; transition:all .25s ease; z-index:80; pointer-events:none; box-shadow:0 8px 20px rgba(0,0,0,0.25); }
   .toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
-
   .empty-state{ text-align:center; color:var(--ink-soft); padding:50px 10px; }
 
-  /* ---------- Reports ---------- */
-  .stat-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(150px,1fr)); gap:12px; margin-top:14px; }
-  .stat-card{ background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:14px 16px; box-shadow:var(--shadow); }
-  .stat-card .stat-label{ font-size:11.5px; font-weight:700; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.04em; }
-  .stat-card .stat-value{ font-family:'Space Mono'; font-size:22px; font-weight:700; color:var(--forest); margin-top:4px; }
-  .status-breakdown{ display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; }
-  .status-breakdown .badge{ font-family:'Space Mono'; }
-  .report-panel{ background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:16px 18px; box-shadow:var(--shadow); margin-top:14px; }
-  .report-panel h4{ margin:0 0 12px; font-size:14.5px; font-family:'Work Sans'; font-weight:700; }
-  .bar-row{ display:flex; align-items:center; gap:10px; margin-bottom:10px; font-size:13px; }
-  .bar-row .bar-label{ width:110px; flex-shrink:0; color:var(--ink-soft); font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-  .bar-row .bar-track{ flex:1; background:#EFEDE3; border-radius:6px; height:16px; overflow:hidden; }
-  .bar-row .bar-fill{ background:var(--leaf); height:100%; border-radius:6px; }
-  .bar-row.money .bar-fill{ background:var(--carrot); }
-  .bar-row .bar-value{ width:64px; text-align:right; font-family:'Space Mono'; font-weight:700; flex-shrink:0; }
-  .reports-cols{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
-  @media(max-width:720px){ .reports-cols{ grid-template-columns:1fr; } }
-
-  @media(max-width:640px){
-    .hero h2{ font-size:24px; }
-    thead{ display:none; }
-    table, tbody, tr, td{ display:block; width:100%; }
-    tbody tr{ padding:10px 0; border-bottom:1px solid var(--line); }
-    tbody td{ border:none; padding:4px 4px; display:flex; justify-content:space-between; align-items:center; }
-    tbody td::before{ content: attr(data-label); font-weight:700; color:var(--ink-soft); font-size:11.5px; text-transform:uppercase; }
-  }
+  @media(max-width:640px){ .hero h2{ font-size:24px; } }
 </style>
 </head>
 <body>
@@ -255,15 +115,8 @@
   <div class="top-inner">
     <div class="brand">
       <div class="brand-mark">🥬</div>
-      <div>
-        <h1>ZestyGreens</h1>
-        <span>from Aru</span>
-      </div>
+      <div><h1>ZestyGreens</h1><span>from Aru</span></div>
     </div>
-    <nav class="tabs">
-      <button id="tabShop" class="active">Shop</button>
-      <button id="tabOwner">Manage Shop</button>
-    </nav>
     <button class="cart-pill" id="cartBtn">🧺 Cart <span class="count" id="cartCount">0</span></button>
   </div>
 </header>
@@ -278,10 +131,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore, doc, getDoc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-/* =========================================================================
-   ONE-TIME SETUP — paste your Firebase project config below.
-   See the setup steps in the chat message for how to get these values.
-   ========================================================================= */
 const firebaseConfig = {
     apiKey: "AIzaSyDKy9R1cXcIFhzyYJTO5p-7pfreoLGrFdY",
     authDomain: "zestygreens-from-aru.firebaseapp.com",
@@ -296,20 +145,18 @@ const firebaseApp = initializeApp(firebaseConfig);
 const db = getFirestore(firebaseApp);
 const itemsDocRef = doc(db, 'shop', 'items');
 const ordersDocRef = doc(db, 'shop', 'orders');
-const analytics = getAnalytics(app);
+const settingsDocRef = doc(db, 'shop', 'settings');
 
 (function(){
 
-  // ---------------- State ----------------
   let items = [];
   let orders = [];
-  let cart = {}; // id -> qty
-  let view = 'shop'; // shop | ownerGate | owner
+  let settings = { upiId: '' };
+  let cart = {};
   let category = 'all';
-  let checkoutStep = 'cart'; // cart | form | confirm
-  let lastOrderCode = '';
-  let ownerUnlocked = false;
-  const OWNER_PIN = '1234';
+  let checkoutStep = 'cart';
+  let pendingOrder = null;
+  let liveOrderCode = '';
 
   const DEFAULT_ITEMS = [
     { id:'i1', name:'Tomato', emoji:'🍅', unit:'kg', price:40, stock:25, category:'Vegetables' },
@@ -326,35 +173,46 @@ const analytics = getAnalytics(app);
     { id:'i12', name:'Beans', emoji:'🫛', unit:'kg', price:45, stock:14, category:'Vegetables' },
   ];
 
-  // ---------------- Storage helpers (Firestore) ----------------
+  function withTimeout(promise, ms=6000){
+    return Promise.race([
+      promise,
+      new Promise((_,reject)=>setTimeout(()=>reject(new Error('timeout')), ms))
+    ]);
+  }
+
   async function loadData(){
     try{
-      const snap = await getDoc(itemsDocRef);
+      const snap = await withTimeout(getDoc(itemsDocRef));
       if(snap.exists()){ items = snap.data().list; }
       else{ items = DEFAULT_ITEMS; await setDoc(itemsDocRef, { list: items }); }
-    }catch(e){
-      items = DEFAULT_ITEMS;
-      showToast('Offline — showing local copy');
-    }
+    }catch(e){ items = DEFAULT_ITEMS; showToast('Could not reach the shop database — showing local copy'); }
     try{
-      const snap = await getDoc(ordersDocRef);
-      if(snap.exists()){ orders = snap.data().list; }
-      else{ orders = []; await setDoc(ordersDocRef, { list: orders }); }
-    }catch(e){
-      orders = [];
-    }
+      const snap = await withTimeout(getDoc(ordersDocRef));
+      orders = snap.exists() ? snap.data().list : [];
+    }catch(e){ orders = []; }
+    try{
+      const snap = await withTimeout(getDoc(settingsDocRef));
+      settings = snap.exists() ? snap.data() : { upiId: '' };
+    }catch(e){ settings = { upiId: '' }; }
 
-    // keep every open tab/device in sync automatically
     onSnapshot(itemsDocRef, (snap)=>{
       if(!snap.exists()) return;
       items = snap.data().list;
-      if(view === 'shop' || view === 'owner') render();
+      if(checkoutStep !== 'payment') render();
     });
     onSnapshot(ordersDocRef, (snap)=>{
       if(!snap.exists()) return;
+      const prevOrder = orders.find(o=>o.code===liveOrderCode);
       orders = snap.data().list;
-      if(view === 'owner') render();
+      if(checkoutStep === 'confirm' && liveOrderCode){
+        const nowOrder = orders.find(o=>o.code===liveOrderCode);
+        if(nowOrder && prevOrder && nowOrder.paymentStatus !== prevOrder.paymentStatus && nowOrder.paymentStatus === 'Confirmed'){
+          showToast('Payment confirmed by shop owner!');
+        }
+        renderDrawer();
+      }
     });
+    onSnapshot(settingsDocRef, (snap)=>{ if(snap.exists()) settings = snap.data(); });
   }
   async function saveItems(){
     try{ await setDoc(itemsDocRef, { list: items }); }
@@ -370,14 +228,10 @@ const analytics = getAnalytics(app);
     t.textContent = msg;
     t.classList.add('show');
     clearTimeout(showToast._h);
-    showToast._h = setTimeout(()=>t.classList.remove('show'), 2200);
+    showToast._h = setTimeout(()=>t.classList.remove('show'), 2600);
   }
-
   function money(n){ return '₹' + n.toFixed(0); }
-
-  function cartCount(){
-    return Object.values(cart).reduce((a,b)=>a+b,0);
-  }
+  function cartCount(){ return Object.values(cart).reduce((a,b)=>a+b,0); }
   function cartTotal(){
     return Object.entries(cart).reduce((sum,[id,qty])=>{
       const it = items.find(i=>i.id===id);
@@ -385,26 +239,16 @@ const analytics = getAnalytics(app);
     },0);
   }
 
-  // ---------------- Render root ----------------
   function render(){
-    document.getElementById('tabShop').classList.toggle('active', view==='shop');
-    document.getElementById('tabOwner').classList.toggle('active', view==='ownerGate'||view==='owner');
     document.getElementById('cartCount').textContent = cartCount();
-
-    const main = document.getElementById('main');
-    if(view==='shop') main.innerHTML = renderShop();
-    else if(view==='ownerGate') main.innerHTML = renderOwnerGate();
-    else if(view==='owner') main.innerHTML = renderOwner();
-
+    document.getElementById('main').innerHTML = renderShop();
     renderDrawer();
-    attachHandlers();
+    attachShopHandlers();
   }
 
-  // ---------------- Shop view ----------------
   function renderShop(){
     const cats = ['all', ...new Set(items.map(i=>i.category))];
     const filtered = category==='all' ? items : items.filter(i=>i.category===category);
-
     const chips = cats.map(c => `<button class="chip ${c===category?'active':''}" data-cat="${c}">${c==='all'?'All':c}</button>`).join('');
 
     const cards = filtered.map(it => {
@@ -449,12 +293,8 @@ const analytics = getAnalytics(app);
     `;
   }
 
-  // ---------------- Cart drawer ----------------
   function renderDrawer(){
-    const overlay = document.getElementById('overlay');
     const drawer = document.getElementById('drawer');
-
-    let body = '';
 
     if(checkoutStep === 'cart'){
       const entries = Object.entries(cart).filter(([id,qty])=>qty>0);
@@ -464,17 +304,12 @@ const analytics = getAnalytics(app);
         return `
         <div class="cart-item">
           <div class="ci-emoji">${it.emoji}</div>
-          <div class="ci-info">
-            <b>${it.name}</b>
-            <div>${qty} × ${money(it.price)} / ${it.unit}</div>
-          </div>
+          <div class="ci-info"><b>${it.name}</b><div>${qty} × ${money(it.price)} / ${it.unit}</div></div>
           <div class="ci-price">${money(it.price*qty)}</div>
           <button class="ci-remove" data-remove="${id}">✕</button>
         </div>`;
       }).join('');
-
-      body = entries.length ? rows : '<div class="empty-note">Your cart is empty.<br>Add some fresh veggies to get started 🥕</div>';
-
+      const body = entries.length ? rows : '<div class="empty-note">Your cart is empty.<br>Add some fresh veggies to get started 🥕</div>';
       drawer.innerHTML = `
         <div class="drawer-head"><h3>Your cart</h3><button data-close-cart>✕</button></div>
         <div class="drawer-body">${body}</div>
@@ -495,316 +330,134 @@ const analytics = getAnalytics(app);
         </div>
         <div class="drawer-foot">
           <div class="total-row"><span>Total</span><span>${money(cartTotal())}</span></div>
-          <button class="checkout-btn" id="placeOrder">Place order</button>
+          <button class="checkout-btn" id="continueToPayment">Continue to payment</button>
+        </div>`;
+    }
+    else if(checkoutStep === 'payment'){
+      const total = pendingOrder ? pendingOrder.total : 0;
+      const hasUpi = !!(settings.upiId && settings.upiId.trim());
+      const upiUri = hasUpi ? `upi://pay?pa=${encodeURIComponent(settings.upiId.trim())}&pn=${encodeURIComponent('ZestyGreens')}&am=${total}&cu=INR&tn=${encodeURIComponent('Order '+(pendingOrder?pendingOrder.code:''))}` : '';
+      const qrSrc = hasUpi ? `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(upiUri)}` : '';
+      drawer.innerHTML = `
+        <div class="drawer-head"><h3>Payment</h3><button data-close-cart>✕</button></div>
+        <div class="drawer-body">
+          <button class="back-link" id="backToForm">← Back</button>
+          <div class="payment-box">
+            <div class="pay-total">${money(total)}</div>
+            <p class="sub">Choose how you'd like to pay</p>
+            ${hasUpi ? `
+              <div class="qr-wrap">
+                <img src="${qrSrc}" alt="UPI QR code">
+                <div class="upi-id">${settings.upiId}</div>
+              </div>
+              <button class="checkout-btn" id="payUpi">I've paid via UPI</button>
+              <div style="height:10px;"></div>
+            ` : `<p class="sub" style="color:var(--tomato-dark)">UPI payment isn't set up yet — pay by cash.</p>`}
+            <button class="checkout-btn outline" id="payCash">Pay by cash on delivery</button>
+          </div>
         </div>`;
     }
     else if(checkoutStep === 'confirm'){
-      drawer.innerHTML = `
-        <div class="drawer-head"><h3>Order placed</h3><button data-close-cart>✕</button></div>
-        <div class="drawer-body">
-          <div class="confirm-box">
-            <div class="big-emoji">✅</div>
-            <h3>Thank you!</h3>
-            <p style="color:var(--ink-soft)">We've received your order and will get it ready shortly.</p>
-            <div class="order-code">${lastOrderCode}</div>
+      const o = orders.find(x=>x.code===liveOrderCode);
+      if(!o){
+        drawer.innerHTML = `
+          <div class="drawer-head"><h3>Order placed</h3><button data-close-cart>✕</button></div>
+          <div class="drawer-body"><div class="confirm-box"><div class="big-emoji">✅</div><h3>Thank you!</h3></div></div>
+          <div class="drawer-foot"><button class="checkout-btn" id="doneOrder">Done</button></div>`;
+      } else {
+        const paidUpi = o.paymentMethod === 'UPI';
+        const confirmed = o.paymentStatus === 'Confirmed';
+        drawer.innerHTML = `
+          <div class="drawer-head"><h3>Order placed</h3><button data-close-cart>✕</button></div>
+          <div class="drawer-body">
+            <div class="confirm-box">
+              <div class="big-emoji">✅</div>
+              <h3>Thank you, ${o.name}!</h3>
+              <p style="color:var(--ink-soft); margin:0;">We've received your order.</p>
+              <div class="order-code">${o.code}</div>
+              <div class="status-panel">
+                <div class="row"><span>Order status</span><b>${o.status}</b></div>
+                <div class="row"><span>Payment</span><b>${paidUpi ? 'UPI' : 'Cash on delivery'}</b></div>
+              </div>
+              ${paidUpi ? (confirmed
+                ? `<div class="thanks-banner">🙏 Thanks! Your payment has been received and confirmed by the shop.</div>`
+                : `<div class="awaiting-banner">Waiting for the shop to confirm your UPI payment — this updates automatically.</div>`)
+                : ``}
+            </div>
           </div>
-        </div>
-        <div class="drawer-foot">
-          <button class="checkout-btn" id="doneOrder">Done</button>
-        </div>`;
+          <div class="drawer-foot"><button class="checkout-btn" id="doneOrder">Done</button></div>`;
+      }
     }
+    attachDrawerHandlers();
   }
 
-  function openCart(){
-    document.getElementById('overlay').classList.add('open');
-    document.getElementById('drawer').classList.add('open');
-  }
+  function openCart(){ document.getElementById('overlay').classList.add('open'); document.getElementById('drawer').classList.add('open'); }
   function closeCart(){
     document.getElementById('overlay').classList.remove('open');
     document.getElementById('drawer').classList.remove('open');
-    checkoutStep = 'cart';
-    renderDrawer();
+    if(checkoutStep !== 'confirm'){ checkoutStep = 'cart'; renderDrawer(); }
   }
+  function openCartQuiet(){ if(cartCount() === 1){ checkoutStep='cart'; renderDrawer(); openCart(); } }
 
-  // ---------------- Owner gate ----------------
-  function renderOwnerGate(){
-    return `
-      <div class="owner-gate">
-        <div class="lock">🔒</div>
-        <h3>Shop owner access</h3>
-        <p style="color:var(--ink-soft); font-size:13.5px; margin:6px 0 0;">Enter the PIN to manage inventory &amp; orders.</p>
-        <input id="pinInput" class="mono" maxlength="4" placeholder="••••">
-        <button id="pinSubmit">Unlock</button>
-        <div class="hint">Demo PIN: 1234 — change OWNER_PIN in the code before real use.</div>
-      </div>`;
-  }
-
-  // ---------------- Reports ----------------
-  function computeReports(){
-    const totalOrders = orders.length;
-    const totalRevenue = orders.reduce((s,o)=>s+o.total,0);
-    const avgOrder = totalOrders ? totalRevenue/totalOrders : 0;
-
-    const statusCounts = { New:0, Preparing:0, Ready:0, Completed:0 };
-    orders.forEach(o=>{ if(statusCounts[o.status]!==undefined) statusCounts[o.status]++; });
-
-    const itemTotals = {};
-    orders.forEach(o=>o.items.forEach(it=>{
-      itemTotals[it.name] = (itemTotals[it.name]||0) + it.qty;
-    }));
-    const topItems = Object.entries(itemTotals).sort((a,b)=>b[1]-a[1]).slice(0,5);
-
-    const dayTotals = {};
-    orders.forEach(o=>{
-      const day = (o.time||'').slice(0,10) || 'unknown';
-      dayTotals[day] = (dayTotals[day]||0) + o.total;
-    });
-    const dailyRevenue = Object.entries(dayTotals).sort((a,b)=>a[0]<b[0]?-1:1).slice(-7);
-
-    const lowStockItems = items.filter(i=>i.stock<=5);
-
-    return { totalOrders, totalRevenue, avgOrder, statusCounts, topItems, dailyRevenue, lowStockItems };
-  }
-
-  function renderReports(){
-    const r = computeReports();
-    const maxQty = Math.max(1, ...r.topItems.map(x=>x[1]));
-    const maxRev = Math.max(1, ...r.dailyRevenue.map(x=>x[1]));
-
-    const topItemsHtml = r.topItems.length ? r.topItems.map(([name,qty])=>`
-      <div class="bar-row">
-        <div class="bar-label">${name}</div>
-        <div class="bar-track"><div class="bar-fill" style="width:${(qty/maxQty*100).toFixed(0)}%"></div></div>
-        <div class="bar-value">${qty}</div>
-      </div>`).join('') : '<div class="empty-note" style="padding:10px 0;">No sales yet.</div>';
-
-    const dailyHtml = r.dailyRevenue.length ? r.dailyRevenue.map(([day,total])=>`
-      <div class="bar-row money">
-        <div class="bar-label">${day}</div>
-        <div class="bar-track"><div class="bar-fill" style="width:${(total/maxRev*100).toFixed(0)}%"></div></div>
-        <div class="bar-value">${money(total)}</div>
-      </div>`).join('') : '<div class="empty-note" style="padding:10px 0;">No sales yet.</div>';
-
-    const lowStockHtml = r.lowStockItems.length
-      ? r.lowStockItems.map(i=>`${i.emoji} ${i.name} (${i.stock} ${i.unit})`).join(' · ')
-      : 'All items are well stocked.';
-
-    return `
-      <div class="section-title"><h3>📊 Reports</h3></div>
-      <div class="stat-grid">
-        <div class="stat-card"><div class="stat-label">Total orders</div><div class="stat-value">${r.totalOrders}</div></div>
-        <div class="stat-card"><div class="stat-label">Total revenue</div><div class="stat-value">${money(r.totalRevenue)}</div></div>
-        <div class="stat-card"><div class="stat-label">Avg. order value</div><div class="stat-value">${money(r.avgOrder)}</div></div>
-        <div class="stat-card"><div class="stat-label">Low stock items</div><div class="stat-value">${r.lowStockItems.length}</div></div>
-      </div>
-      <div class="status-breakdown">
-        <span class="badge badge-new">New: ${r.statusCounts.New}</span>
-        <span class="badge badge-preparing">Preparing: ${r.statusCounts.Preparing}</span>
-        <span class="badge badge-ready">Ready: ${r.statusCounts.Ready}</span>
-        <span class="badge badge-completed">Completed: ${r.statusCounts.Completed}</span>
-      </div>
-      <div class="reports-cols">
-        <div class="report-panel">
-          <h4>Top selling items</h4>
-          ${topItemsHtml}
-        </div>
-        <div class="report-panel">
-          <h4>Revenue, last 7 active days</h4>
-          ${dailyHtml}
-        </div>
-      </div>
-      <div class="report-panel" style="margin-top:14px;">
-        <h4>Stock to restock soon</h4>
-        <div style="font-size:13.5px; color:var(--ink-soft);">${lowStockHtml}</div>
-      </div>
-    `;
-  }
-
-  // ---------------- Owner view ----------------
-  function renderOwner(){
-    const invRows = items.map(it => `
-      <tr data-row="${it.id}">
-        <td data-label="Item"><div class="icell"><span class="emoji">${it.emoji}</span><span>${it.name}</span></div></td>
-        <td data-label="Category">${it.category}</td>
-        <td data-label="Price (₹)"><input type="number" min="0" class="edit-price" data-id="${it.id}" value="${it.price}"></td>
-        <td data-label="Stock"><input type="number" min="0" class="edit-stock" data-id="${it.id}" value="${it.stock}"></td>
-        <td data-label="Unit"><input type="text" class="edit-unit" data-id="${it.id}" value="${it.unit}" style="width:60px;"></td>
-        <td data-label=""><button class="del-btn" data-del="${it.id}">Remove</button></td>
-      </tr>`).join('');
-
-    const statusOptions = ['New','Preparing','Ready','Completed'];
-    const orderCards = [...orders].reverse().map(o => {
-      const itemsLine = o.items.map(x=>`${x.qty}× ${x.name}`).join(', ');
-      const badgeClass = 'badge-' + o.status.toLowerCase();
-      const opts = statusOptions.map(s=>`<option value="${s}" ${s===o.status?'selected':''}>${s}</option>`).join('');
-      return `
-      <div class="order-card">
-        <div class="oc-top">
-          <div><span class="oc-code">${o.code}</span> · ${o.name} · ${o.phone}</div>
-          <select class="status-select" data-order="${o.code}">${opts}</select>
-        </div>
-        <div class="oc-items">${itemsLine} — <b class="mono">${money(o.total)}</b></div>
-        <div class="oc-items" style="margin-top:2px;">${o.address}${o.note ? ' · Note: '+o.note : ''}</div>
-      </div>`;
-    }).join('');
-
-    return `
-      <div class="section-title">
-        <h3>Manage Shop</h3>
-        <button class="small-btn" id="lockOwner">Lock panel</button>
-      </div>
-      ${renderReports()}
-
-      <div class="section-title">
-        <h3>📦 Inventory</h3>
-      </div>
-      <table>
-        <thead><tr><th>Item</th><th>Category</th><th>Price (₹)</th><th>Stock</th><th>Unit</th><th></th></tr></thead>
-        <tbody>${invRows}</tbody>
-      </table>
-
-      <div class="section-title"><h3>➕ Add new item</h3></div>
-      <div class="add-item-card">
-        <div class="form-field"><label>Emoji</label><input id="newEmoji" placeholder="🥕" style="width:60px;"></div>
-        <div class="form-field"><label>Name</label><input id="newName" placeholder="e.g. Radish"></div>
-        <div class="form-field"><label>Category</label><input id="newCategory" placeholder="e.g. Vegetables"></div>
-        <div class="form-field"><label>Price (₹)</label><input id="newPrice" type="number" min="0" placeholder="30"></div>
-        <div class="form-field"><label>Stock</label><input id="newStock" type="number" min="0" placeholder="10"></div>
-        <div class="form-field"><label>Unit</label><input id="newUnit" placeholder="kg"></div>
-        <button class="small-btn solid" id="addItemBtn">Add item</button>
-      </div>
-
-      <div class="section-title"><h3>🧾 Orders (${orders.length})</h3></div>
-      ${orderCards || '<div class="empty-state">No orders yet.</div>'}
-    `;
-  }
-
-  // ---------------- Handlers ----------------
-  function attachHandlers(){
-    document.getElementById('tabShop').onclick = ()=>{ view='shop'; render(); };
-    document.getElementById('tabOwner').onclick = ()=>{ view = ownerUnlocked ? 'owner' : 'ownerGate'; render(); };
-    document.getElementById('cartBtn').onclick = ()=>{ checkoutStep='cart'; renderDrawer(); openCart(); };
+  function attachShopHandlers(){
+    document.getElementById('cartBtn').onclick = ()=>{ if(checkoutStep!=='confirm') checkoutStep='cart'; renderDrawer(); openCart(); };
     document.getElementById('overlay').onclick = closeCart;
 
-    if(view==='shop'){
-      document.querySelectorAll('[data-cat]').forEach(b=>{
-        b.onclick = ()=>{ category = b.dataset.cat; render(); };
-      });
-      document.querySelectorAll('[data-inc]').forEach(b=>{
-        b.onclick = ()=>{
-          const id = b.dataset.inc;
-          const it = items.find(i=>i.id===id);
-          const cur = cart[id] || 0;
-          if(cur < it.stock){ cart[id] = cur + 1; render(); openCartQuiet(); }
-        };
-      });
-      document.querySelectorAll('[data-dec]').forEach(b=>{
-        b.onclick = ()=>{
-          const id = b.dataset.dec;
-          const cur = cart[id] || 0;
-          if(cur <= 1) delete cart[id]; else cart[id] = cur - 1;
-          render();
-        };
-      });
-      document.querySelectorAll('[data-open-cart]').forEach(b=>{
-        b.onclick = ()=>{ checkoutStep='cart'; renderDrawer(); openCart(); };
-      });
-    }
+    document.querySelectorAll('[data-cat]').forEach(b=>{ b.onclick = ()=>{ category = b.dataset.cat; render(); }; });
+    document.querySelectorAll('[data-inc]').forEach(b=>{
+      b.onclick = ()=>{
+        const id = b.dataset.inc;
+        const it = items.find(i=>i.id===id);
+        const cur = cart[id] || 0;
+        if(cur < it.stock){ cart[id] = cur + 1; render(); openCartQuiet(); }
+      };
+    });
+    document.querySelectorAll('[data-dec]').forEach(b=>{
+      b.onclick = ()=>{
+        const id = b.dataset.dec;
+        const cur = cart[id] || 0;
+        if(cur <= 1) delete cart[id]; else cart[id] = cur - 1;
+        render();
+      };
+    });
+    document.querySelectorAll('[data-open-cart]').forEach(b=>{ b.onclick = ()=>{ checkoutStep='cart'; renderDrawer(); openCart(); }; });
+  }
 
-    // drawer handlers
+  function attachDrawerHandlers(){
     const closeBtn = document.querySelector('[data-close-cart]');
     if(closeBtn) closeBtn.onclick = closeCart;
+
     document.querySelectorAll('[data-remove]').forEach(b=>{
-      b.onclick = ()=>{ delete cart[b.dataset.remove]; render(); openCart(); };
+      b.onclick = ()=>{ delete cart[b.dataset.remove]; document.getElementById('cartCount').textContent = cartCount(); document.getElementById('main').innerHTML = renderShop(); attachShopHandlers(); renderDrawer(); openCart(); };
     });
+
     const goCheckout = document.getElementById('goCheckout');
     if(goCheckout) goCheckout.onclick = ()=>{ checkoutStep='form'; renderDrawer(); };
+
     const backToCart = document.getElementById('backToCart');
     if(backToCart) backToCart.onclick = ()=>{ checkoutStep='cart'; renderDrawer(); };
-    const placeOrder = document.getElementById('placeOrder');
-    if(placeOrder) placeOrder.onclick = handlePlaceOrder;
+
+    const continueToPayment = document.getElementById('continueToPayment');
+    if(continueToPayment) continueToPayment.onclick = handleContinueToPayment;
+
+    const backToForm = document.getElementById('backToForm');
+    if(backToForm) backToForm.onclick = ()=>{ checkoutStep='form'; renderDrawer(); };
+
+    const payUpi = document.getElementById('payUpi');
+    if(payUpi) payUpi.onclick = ()=>finalizeOrder('UPI');
+
+    const payCash = document.getElementById('payCash');
+    if(payCash) payCash.onclick = ()=>finalizeOrder('Cash');
+
     const doneOrder = document.getElementById('doneOrder');
-    if(doneOrder) doneOrder.onclick = ()=>{ closeCart(); };
-
-    // owner gate
-    const pinSubmit = document.getElementById('pinSubmit');
-    if(pinSubmit){
-      pinSubmit.onclick = ()=>{
-        const val = document.getElementById('pinInput').value;
-        if(val === OWNER_PIN){ ownerUnlocked = true; view = 'owner'; render(); }
-        else showToast('Incorrect PIN');
-      };
-    }
-
-    // owner view
-    if(view==='owner'){
-      const lockBtn = document.getElementById('lockOwner');
-      if(lockBtn) lockBtn.onclick = ()=>{ ownerUnlocked=false; view='shop'; render(); };
-
-      document.querySelectorAll('.edit-price').forEach(inp=>{
-        inp.onchange = async ()=>{
-          const it = items.find(i=>i.id===inp.dataset.id);
-          it.price = Math.max(0, parseFloat(inp.value)||0);
-          await saveItems(); showToast('Price updated');
-        };
-      });
-      document.querySelectorAll('.edit-stock').forEach(inp=>{
-        inp.onchange = async ()=>{
-          const it = items.find(i=>i.id===inp.dataset.id);
-          it.stock = Math.max(0, parseInt(inp.value)||0);
-          await saveItems(); showToast('Stock updated');
-        };
-      });
-      document.querySelectorAll('.edit-unit').forEach(inp=>{
-        inp.onchange = async ()=>{
-          const it = items.find(i=>i.id===inp.dataset.id);
-          it.unit = inp.value || it.unit;
-          await saveItems(); showToast('Unit updated');
-        };
-      });
-      document.querySelectorAll('[data-del]').forEach(b=>{
-        b.onclick = async ()=>{
-          if(!confirm('Remove this item from the shop?')) return;
-          items = items.filter(i=>i.id!==b.dataset.del);
-          await saveItems(); render(); showToast('Item removed');
-        };
-      });
-      const addBtn = document.getElementById('addItemBtn');
-      if(addBtn) addBtn.onclick = handleAddItem;
-
-      document.querySelectorAll('.status-select').forEach(sel=>{
-        sel.onchange = async ()=>{
-          const o = orders.find(o=>o.code===sel.dataset.order);
-          o.status = sel.value;
-          await saveOrders(); showToast('Order status updated');
-        };
-      });
-    }
+    if(doneOrder) doneOrder.onclick = ()=>{
+      closeCart();
+      checkoutStep = 'cart'; liveOrderCode=''; pendingOrder=null;
+      renderDrawer();
+    };
   }
 
-  function openCartQuiet(){
-    // small nudge: open cart automatically after first add for clarity, but don't fight repeated adds
-    if(cartCount() === 1){
-      checkoutStep='cart'; renderDrawer(); openCart();
-    }
-  }
-
-  async function handleAddItem(){
-    const emoji = document.getElementById('newEmoji').value.trim() || '🥗';
-    const name = document.getElementById('newName').value.trim();
-    const category = document.getElementById('newCategory').value.trim() || 'Vegetables';
-    const price = parseFloat(document.getElementById('newPrice').value) || 0;
-    const stock = parseInt(document.getElementById('newStock').value) || 0;
-    const unit = document.getElementById('newUnit').value.trim() || 'kg';
-    if(!name){ showToast('Please enter an item name'); return; }
-    const id = 'i' + Date.now();
-    items.push({ id, name, emoji, category, price, stock, unit });
-    await saveItems();
-    render();
-    showToast(name + ' added to shop');
-  }
-
-  async function handlePlaceOrder(){
+  function handleContinueToPayment(){
     const name = document.getElementById('fName').value.trim();
     const phone = document.getElementById('fPhone').value.trim();
     const address = document.getElementById('fAddress').value.trim();
@@ -817,33 +470,46 @@ const analytics = getAnalytics(app);
     });
     if(!orderItems.length){ showToast('Your cart is empty'); return; }
 
-    // decrement stock
-    orderItems.forEach(oi=>{
-      const it = items.find(i=>i.id===oi.id);
-      it.stock = Math.max(0, it.stock - oi.qty);
-    });
-
-    const code = 'ZG' + Math.floor(1000 + Math.random()*9000);
-    const order = {
-      code, name, phone, address, note,
+    pendingOrder = {
+      code: 'ZG' + Math.floor(1000 + Math.random()*9000),
+      name, phone, address, note,
       items: orderItems,
       total: orderItems.reduce((s,i)=>s+i.price*i.qty,0),
+    };
+    checkoutStep = 'payment';
+    renderDrawer();
+  }
+
+  async function finalizeOrder(method){
+    if(!pendingOrder) return;
+
+    pendingOrder.items.forEach(oi=>{
+      const it = items.find(i=>i.id===oi.id);
+      if(it) it.stock = Math.max(0, it.stock - oi.qty);
+    });
+
+    const order = {
+      ...pendingOrder,
       status: 'New',
+      paymentMethod: method,
+      paymentStatus: method === 'Cash' ? 'Cash on delivery' : 'Awaiting confirmation',
       time: new Date().toISOString()
     };
     orders.push(order);
-    lastOrderCode = code;
+    liveOrderCode = order.code;
 
     await saveItems();
     await saveOrders();
 
     cart = {};
+    pendingOrder = null;
     checkoutStep = 'confirm';
-    render();
+    document.getElementById('cartCount').textContent = cartCount();
+    document.getElementById('main').innerHTML = renderShop();
+    attachShopHandlers();
     renderDrawer();
   }
 
-  // ---------------- Init ----------------
   async function init(){
     document.getElementById('main').innerHTML = '<div class="empty-state">Loading fresh stock…</div>';
     await loadData();

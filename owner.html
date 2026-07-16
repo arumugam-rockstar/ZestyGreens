@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZestyGreens — Owner Panel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,700;1,500&family=Work+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #F1F4EC; --panel: #FFFFFF; --ink: #1F2A1D; --ink-soft: #55604E;
+    --forest: #1E3A2B; --leaf: #5B8C3E; --leaf-light: #E4EFD9;
+    --tomato: #C1440E; --tomato-dark: #9C3609; --carrot: #E8892B;
+    --tag: #F3E7C9; --line: #D8D3C0;
+    --shadow: 0 2px 0 rgba(0,0,0,0.04), 0 8px 20px -12px rgba(20,38,27,0.25);
+  }
+  *{box-sizing:border-box;}
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:'Work Sans', sans-serif; -webkit-font-smoothing:antialiased; }
+  h1,h2,h3,h4,.display{ font-family:'Fraunces', serif; font-weight:600; letter-spacing:-0.01em; }
+  .mono{ font-family:'Space Mono', monospace; }
+  button{ font-family:inherit; cursor:pointer; }
+
+  header.top{ background: var(--forest); color: #F1F4EC; padding: 22px 24px 20px; position: sticky; top:0; z-index: 40; box-shadow: 0 6px 16px -10px rgba(0,0,0,0.5); }
+  .top-inner{ max-width: 1080px; margin: 0 auto; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+  .brand{ display:flex; align-items:center; gap:12px; }
+  .brand-mark{ width:42px; height:42px; border-radius:10px; background: var(--leaf); display:flex; align-items:center; justify-content:center; font-size:22px; transform: rotate(-4deg); box-shadow: 0 3px 0 rgba(0,0,0,0.15); }
+  .brand h1{ margin:0; font-size:22px; color:#fff; line-height:1.1; }
+  .brand span{ display:block; font-size:11.5px; color:#B9C9AE; letter-spacing:.06em; text-transform:uppercase; margin-top:3px;}
+
+  main{ max-width:1080px; margin:0 auto; padding: 28px 24px 80px; }
+
+  .owner-gate{ max-width:380px; margin: 60px auto; background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:28px; text-align:center; box-shadow:var(--shadow);}
+  .owner-gate .lock{ font-size:36px; }
+  .owner-gate input{ margin:14px 0; text-align:center; letter-spacing:.3em; font-size:18px; width:100%; border:1px solid var(--line); border-radius:9px; padding:10px 11px; font-family:'Space Mono'; }
+  .owner-gate button.primary{ width:100%; border:none; background:var(--forest); color:#fff; padding:11px; border-radius:9px; font-weight:700; }
+  .owner-gate .hint{ font-size:11.5px; color:var(--ink-soft); margin-top:10px; }
+  .owner-gate .step-label{ font-size:12.5px; font-weight:700; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.05em; margin-bottom:6px; }
+  .owner-gate .link-btn{ background:none; border:none; color:var(--forest); font-weight:600; font-size:12.5px; margin-top:10px; text-decoration:underline; }
+  .owner-gate .error{ color:var(--tomato-dark); font-size:12.5px; font-weight:600; margin-top:8px; min-height:16px; }
+
+  .section-title{ display:flex; justify-content:space-between; align-items:center; margin: 30px 0 12px; }
+  .section-title h3{ margin:0; font-size:19px; }
+  .small-btn{ border:1px solid var(--forest); background:#fff; color:var(--forest); padding:7px 13px; border-radius:8px; font-weight:700; font-size:13px; }
+  .small-btn.solid{ background:var(--forest); color:#fff; }
+  .small-btn.warn{ border-color:var(--tomato); color:var(--tomato-dark); }
+
+  table{ width:100%; border-collapse:collapse; background:var(--panel); border-radius:12px; overflow:hidden; box-shadow:var(--shadow); }
+  thead th{ text-align:left; background:var(--forest); color:#fff; font-size:12px; text-transform:uppercase; letter-spacing:.05em; padding:10px 12px; }
+  tbody td{ padding:10px 12px; border-bottom:1px solid #EFEDE3; font-size:14px; vertical-align:middle; }
+  tbody tr:last-child td{ border-bottom:none; }
+  tbody input, tbody select{ border:1px solid var(--line); border-radius:6px; padding:5px 7px; font-size:13px; font-family:'Space Mono'; width:76px; }
+  .icell{ display:flex; align-items:center; gap:8px; }
+  .icell .emoji{ font-size:22px; }
+  .del-btn{ border:none; background:none; color:var(--tomato); font-size:13px; font-weight:700; }
+  .status-select{ font-family:'Work Sans'; width:auto !important; padding:5px 8px !important; font-weight:600; }
+
+  .form-field{ margin-bottom:12px; }
+  .form-field label{ display:block; font-size:12.5px; font-weight:600; color:var(--ink-soft); margin-bottom:5px; }
+  .form-field input{ width:100%; border:1px solid var(--line); border-radius:9px; padding:10px 11px; font-family:inherit; font-size:14px; background:#FBFAF5; }
+
+  .add-item-card, .settings-card{ background:var(--panel); border:1px dashed var(--line); border-radius:12px; padding:14px; display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end; }
+  .add-item-card .form-field, .settings-card .form-field{ margin:0; flex:1; min-width:110px; }
+
+  .order-card{ background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:14px 16px; margin-bottom:12px; box-shadow:var(--shadow); }
+  .order-card .oc-top{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; }
+  .order-card .oc-code{ font-family:'Space Mono'; font-weight:700; }
+  .order-card .oc-items{ color:var(--ink-soft); font-size:13.5px; margin-top:6px; }
+  .order-card .oc-actions{ margin-top:10px; display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+  .badge{ font-size:11px; font-weight:700; padding:3px 10px; border-radius:999px; }
+  .badge-new{ background:#FCEAD2; color:#9C5A0B; }
+  .badge-preparing{ background:#DDEBFB; color:#1B5FA8; }
+  .badge-ready{ background:var(--leaf-light); color:#3D6428; }
+  .badge-completed{ background:#EFEDE3; color:var(--ink-soft); }
+  .badge-pay-awaiting{ background:var(--tag); color:var(--tomato-dark); }
+  .badge-pay-confirmed{ background:var(--leaf-light); color:#3D6428; }
+  .badge-pay-cash{ background:#EFEDE3; color:var(--ink-soft); }
+
+  .toast{ position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(20px); background:var(--forest); color:#fff; padding:12px 20px; border-radius:10px; font-size:14px; font-weight:600; opacity:0; transition:all .25s ease; z-index:80; pointer-events:none; box-shadow:0 8px 20px rgba(0,0,0,0.25); }
+  .toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+  .empty-state, .empty-note{ text-align:center; color:var(--ink-soft); padding:40px 10px; }
+
+  .stat-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(150px,1fr)); gap:12px; margin-top:14px; }
+  .stat-card{ background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:14px 16px; box-shadow:var(--shadow); }
+  .stat-card .stat-label{ font-size:11.5px; font-weight:700; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.04em; }
+  .stat-card .stat-value{ font-family:'Space Mono'; font-size:22px; font-weight:700; color:var(--forest); margin-top:4px; }
+  .status-breakdown{ display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; }
+  .status-breakdown .badge{ font-family:'Space Mono'; }
+  .report-panel{ background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:16px 18px; box-shadow:var(--shadow); margin-top:14px; }
+  .report-panel h4{ margin:0 0 12px; font-size:14.5px; font-family:'Work Sans'; font-weight:700; }
+  .bar-row{ display:flex; align-items:center; gap:10px; margin-bottom:10px; font-size:13px; }
+  .bar-row .bar-label{ width:110px; flex-shrink:0; color:var(--ink-soft); font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .bar-row .bar-track{ flex:1; background:#EFEDE3; border-radius:6px; height:16px; overflow:hidden; }
+  .bar-row .bar-fill{ background:var(--leaf); height:100%; border-radius:6px; }
+  .bar-row.money .bar-fill{ background:var(--carrot); }
+  .bar-row .bar-value{ width:64px; text-align:right; font-family:'Space Mono'; font-weight:700; flex-shrink:0; }
+  .reports-cols{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  @media(max-width:720px){ .reports-cols{ grid-template-columns:1fr; } }
+
+  .qr-preview{ width:100px; height:100px; border-radius:8px; border:1px solid var(--line); }
+
+  @media(max-width:640px){
+    thead{ display:none; }
+    table, tbody, tr, td{ display:block; width:100%; }
+    tbody tr{ padding:10px 0; border-bottom:1px solid var(--line); }
+    tbody td{ border:none; padding:4px 4px; display:flex; justify-content:space-between; align-items:center; }
+    tbody td::before{ content: attr(data-label); font-weight:700; color:var(--ink-soft); font-size:11.5px; text-transform:uppercase; }
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-inner">
+    <div class="brand">
+      <div class="brand-mark">🥬</div>
+      <div><h1>ZestyGreens</h1><span>Owner panel</span></div>
+    </div>
+  </div>
+</header>
+
+<main id="main"></main>
+<div id="recaptcha-container"></div>
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, doc, getDoc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getAuth, RecaptchaVerifier, signInWithPhoneNumber, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+/* =========================================================================
+   ONE-TIME SETUP
+   1) Paste the SAME firebaseConfig used in index.html below.
+   2) Firebase console: Authentication -> Sign-in method -> enable "Phone".
+   3) Project must be on the Blaze (pay-as-you-go) plan for real SMS to send.
+   4) Set OWNER_PHONE to YOUR number in international format, e.g. "+919876543210".
+   5) The PIN itself is now stored in Firestore (shop/settings) so you can
+      change it from inside the app -- see "Change PIN" below once signed in.
+      DEFAULT_PIN is only used the very first time, before any PIN is saved.
+   ========================================================================= */
+const firebaseConfig = {
+    apiKey: "AIzaSyDKy9R1cXcIFhzyYJTO5p-7pfreoLGrFdY",
+    authDomain: "zestygreens-from-aru.firebaseapp.com",
+    projectId: "zestygreens-from-aru",
+    storageBucket: "zestygreens-from-aru.firebasestorage.app",
+    messagingSenderId: "2139881949",
+    appId: "1:2139881949:web:ad34224d26043d2a8ab634",
+};
+const OWNER_PHONE = "+918056023410"; // <-- your phone number, international format
+const DEFAULT_PIN = "6666"; // <-- used only until a PIN is saved in Firestore
+
+const firebaseApp = initializeApp(firebaseConfig);
+const db = getFirestore(firebaseApp);
+const auth = getAuth(firebaseApp);
+const itemsDocRef = doc(db, 'shop', 'items');
+const ordersDocRef = doc(db, 'shop', 'orders');
+const settingsDocRef = doc(db, 'shop', 'settings');
+
+(function(){
+
+  let items = [];
+  let orders = [];
+  let settings = { upiId: '', ownerPin: DEFAULT_PIN };
+  let gateStep = 'pin'; // pin | otp | unlocked
+  let gateError = '';
+  let confirmationResult = null;
+  let recaptchaVerifier = null;
+  let sendingOtp = false;
+  let pinChangeMsg = '';
+
+  function withTimeout(promise, ms=6000){
+    return Promise.race([
+      promise,
+      new Promise((_,reject)=>setTimeout(()=>reject(new Error('timeout')), ms))
+    ]);
+  }
+
+  async function loadData(){
+    try{
+      const snap = await withTimeout(getDoc(itemsDocRef));
+      items = snap.exists() ? snap.data().list : [];
+    }catch(e){ items = []; showToast('Could not reach the shop database'); }
+    try{
+      const snap = await withTimeout(getDoc(ordersDocRef));
+      orders = snap.exists() ? snap.data().list : [];
+    }catch(e){ orders = []; }
+    try{
+      const snap = await withTimeout(getDoc(settingsDocRef));
+      if(snap.exists()){ settings = { upiId:'', ownerPin: DEFAULT_PIN, ...snap.data() }; }
+      else{ settings = { upiId:'', ownerPin: DEFAULT_PIN }; await setDoc(settingsDocRef, settings); }
+    }catch(e){ settings = { upiId:'', ownerPin: DEFAULT_PIN }; }
+
+    onSnapshot(itemsDocRef, (snap)=>{ if(snap.exists()){ items = snap.data().list; if(gateStep==='unlocked') render(); } });
+    onSnapshot(ordersDocRef, (snap)=>{ if(snap.exists()){ orders = snap.data().list; if(gateStep==='unlocked') render(); } });
+    onSnapshot(settingsDocRef, (snap)=>{ if(snap.exists()){ settings = { upiId:'', ownerPin: DEFAULT_PIN, ...snap.data() }; if(gateStep==='unlocked') render(); } });
+  }
+  async function saveItems(){
+    try{ await setDoc(itemsDocRef, { list: items }); }
+    catch(e){ showToast('Could not save — check your connection'); }
+  }
+  async function saveOrders(){
+    try{ await setDoc(ordersDocRef, { list: orders }); }
+    catch(e){ showToast('Could not save — check your connection'); }
+  }
+  async function saveSettings(){
+    try{ await setDoc(settingsDocRef, settings); }
+    catch(e){ showToast('Could not save — check your connection'); }
+  }
+
+  function showToast(msg){
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(showToast._h);
+    showToast._h = setTimeout(()=>t.classList.remove('show'), 2400);
+  }
+  function money(n){ return '₹' + n.toFixed(0); }
+
+  function render(){
+    const main = document.getElementById('main');
+    if(gateStep === 'unlocked') main.innerHTML = renderOwner();
+    else main.innerHTML = renderGate();
+    attachHandlers();
+  }
+
+  function renderGate(){
+    if(gateStep === 'pin'){
+      return `
+        <div class="owner-gate">
+          <div class="lock">🔒</div>
+          <h3>Owner sign-in</h3>
+          <div class="step-label" style="margin-top:14px;">Step 1 of 2 — PIN</div>
+          <input id="pinInput" maxlength="6" placeholder="••••" autofocus>
+          <button class="primary" id="pinSubmit">Continue</button>
+          <div class="error">${gateError}</div>
+          <div class="hint">A verification code will then be sent by SMS to the registered owner number.</div>
+        </div>`;
+    }
+    if(gateStep === 'otp'){
+      const last4 = OWNER_PHONE.slice(-4);
+      return `
+        <div class="owner-gate">
+          <div class="lock">📱</div>
+          <h3>Enter verification code</h3>
+          <div class="step-label" style="margin-top:14px;">Step 2 of 2 — SMS code</div>
+          <p style="color:var(--ink-soft); font-size:13px; margin:0;">We sent a 6-digit code to the number ending in ${last4}.</p>
+          <input id="otpInput" maxlength="6" placeholder="••••••">
+          <button class="primary" id="otpSubmit" ${sendingOtp?'disabled':''}>${sendingOtp?'Verifying…':'Verify & sign in'}</button>
+          <button class="link-btn" id="resendOtp">Resend code</button>
+          <div class="error">${gateError}</div>
+        </div>`;
+    }
+  }
+
+  function setupRecaptcha(){
+    if(recaptchaVerifier) return recaptchaVerifier;
+    recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', { size: 'invisible' });
+    return recaptchaVerifier;
+  }
+
+  async function sendOtp(){
+    gateError = '';
+    sendingOtp = true; render();
+    try{
+      const verifier = setupRecaptcha();
+      confirmationResult = await signInWithPhoneNumber(auth, OWNER_PHONE, verifier);
+      gateStep = 'otp';
+      sendingOtp = false;
+      render();
+      showToast('Code sent');
+    }catch(e){
+      sendingOtp = false;
+      gateError = 'Could not send code: ' + (e.message || 'try again');
+      render();
+    }
+  }
+
+  function computeReports(){
+    const totalOrders = orders.length;
+    const totalRevenue = orders.reduce((s,o)=>s+o.total,0);
+    const avgOrder = totalOrders ? totalRevenue/totalOrders : 0;
+    const statusCounts = { New:0, Preparing:0, Ready:0, Completed:0 };
+    orders.forEach(o=>{ if(statusCounts[o.status]!==undefined) statusCounts[o.status]++; });
+    const itemTotals = {};
+    orders.forEach(o=>o.items.forEach(it=>{ itemTotals[it.name] = (itemTotals[it.name]||0) + it.qty; }));
+    const topItems = Object.entries(itemTotals).sort((a,b)=>b[1]-a[1]).slice(0,5);
+    const dayTotals = {};
+    orders.forEach(o=>{ const day = (o.time||'').slice(0,10) || 'unknown'; dayTotals[day] = (dayTotals[day]||0) + o.total; });
+    const dailyRevenue = Object.entries(dayTotals).sort((a,b)=>a[0]<b[0]?-1:1).slice(-7);
+    const lowStockItems = items.filter(i=>i.stock<=5);
+    const pendingPayments = orders.filter(o=>o.paymentMethod==='UPI' && o.paymentStatus!=='Confirmed').length;
+    return { totalOrders, totalRevenue, avgOrder, statusCounts, topItems, dailyRevenue, lowStockItems, pendingPayments };
+  }
+
+  function renderReports(){
+    const r = computeReports();
+    const maxQty = Math.max(1, ...r.topItems.map(x=>x[1]));
+    const maxRev = Math.max(1, ...r.dailyRevenue.map(x=>x[1]));
+
+    const topItemsHtml = r.topItems.length ? r.topItems.map(([name,qty])=>`
+      <div class="bar-row">
+        <div class="bar-label">${name}</div>
+        <div class="bar-track"><div class="bar-fill" style="width:${(qty/maxQty*100).toFixed(0)}%"></div></div>
+        <div class="bar-value">${qty}</div>
+      </div>`).join('') : '<div class="empty-note" style="padding:10px 0;">No sales yet.</div>';
+
+    const dailyHtml = r.dailyRevenue.length ? r.dailyRevenue.map(([day,total])=>`
+      <div class="bar-row money">
+        <div class="bar-label">${day}</div>
+        <div class="bar-track"><div class="bar-fill" style="width:${(total/maxRev*100).toFixed(0)}%"></div></div>
+        <div class="bar-value">${money(total)}</div>
+      </div>`).join('') : '<div class="empty-note" style="padding:10px 0;">No sales yet.</div>';
+
+    const lowStockHtml = r.lowStockItems.length
+      ? r.lowStockItems.map(i=>`${i.emoji} ${i.name} (${i.stock} ${i.unit})`).join(' · ')
+      : 'All items are well stocked.';
+
+    return `
+      <div class="section-title"><h3>📊 Reports</h3></div>
+      <div class="stat-grid">
+        <div class="stat-card"><div class="stat-label">Total orders</div><div class="stat-value">${r.totalOrders}</div></div>
+        <div class="stat-card"><div class="stat-label">Total revenue</div><div class="stat-value">${money(r.totalRevenue)}</div></div>
+        <div class="stat-card"><div class="stat-label">Avg. order value</div><div class="stat-value">${money(r.avgOrder)}</div></div>
+        <div class="stat-card"><div class="stat-label">Payments to confirm</div><div class="stat-value">${r.pendingPayments}</div></div>
+      </div>
+      <div class="status-breakdown">
+        <span class="badge badge-new">New: ${r.statusCounts.New}</span>
+        <span class="badge badge-preparing">Preparing: ${r.statusCounts.Preparing}</span>
+        <span class="badge badge-ready">Ready: ${r.statusCounts.Ready}</span>
+        <span class="badge badge-completed">Completed: ${r.statusCounts.Completed}</span>
+      </div>
+      <div class="reports-cols">
+        <div class="report-panel"><h4>Top selling items</h4>${topItemsHtml}</div>
+        <div class="report-panel"><h4>Revenue, last 7 active days</h4>${dailyHtml}</div>
+      </div>
+      <div class="report-panel" style="margin-top:14px;">
+        <h4>Stock to restock soon</h4>
+        <div style="font-size:13.5px; color:var(--ink-soft);">${lowStockHtml}</div>
+      </div>
+    `;
+  }
+
+  function renderOwner(){
+    const invRows = items.map(it => `
+      <tr>
+        <td data-label="Item"><div class="icell"><span class="emoji">${it.emoji}</span><span>${it.name}</span></div></td>
+        <td data-label="Category">${it.category}</td>
+        <td data-label="Price (₹)"><input type="number" min="0" class="edit-price" data-id="${it.id}" value="${it.price}"></td>
+        <td data-label="Stock"><input type="number" min="0" class="edit-stock" data-id="${it.id}" value="${it.stock}"></td>
+        <td data-label="Unit"><input type="text" class="edit-unit" data-id="${it.id}" value="${it.unit}" style="width:60px;"></td>
+        <td data-label=""><button class="del-btn" data-del="${it.id}">Remove</button></td>
+      </tr>`).join('');
+
+    const statusOptions = ['New','Preparing','Ready','Completed'];
+    const orderCards = [...orders].reverse().map(o => {
+      const itemsLine = o.items.map(x=>`${x.qty}× ${x.name}`).join(', ');
+      const opts = statusOptions.map(s=>`<option value="${s}" ${s===o.status?'selected':''}>${s}</option>`).join('');
+      const isUpi = o.paymentMethod === 'UPI';
+      const payBadge = isUpi
+        ? (o.paymentStatus === 'Confirmed' ? `<span class="badge badge-pay-confirmed">Payment confirmed</span>` : `<span class="badge badge-pay-awaiting">Awaiting payment confirmation</span>`)
+        : `<span class="badge badge-pay-cash">Cash on delivery</span>`;
+      const confirmBtn = (isUpi && o.paymentStatus !== 'Confirmed')
+        ? `<button class="small-btn solid" data-confirm-pay="${o.code}">✅ Confirm payment received</button>` : '';
+      return `
+      <div class="order-card">
+        <div class="oc-top">
+          <div><span class="oc-code">${o.code}</span> · ${o.name} · ${o.phone}</div>
+          <select class="status-select" data-order="${o.code}">${opts}</select>
+        </div>
+        <div class="oc-items">${itemsLine} — <b class="mono">${money(o.total)}</b></div>
+        <div class="oc-items" style="margin-top:2px;">${o.address}${o.note ? ' · Note: '+o.note : ''}</div>
+        <div class="oc-actions">${payBadge}${confirmBtn}</div>
+      </div>`;
+    }).join('');
+
+    return `
+      <div class="section-title">
+        <h3>Manage Shop</h3>
+        <button class="small-btn" id="lockOwner">Sign out</button>
+      </div>
+      ${renderReports()}
+
+      <div class="section-title"><h3>💳 Payment settings</h3></div>
+      <div class="settings-card">
+        <div class="form-field">
+          <label>UPI ID (shown to customers as a QR code)</label>
+          <input id="upiIdInput" placeholder="yourname@bank" value="${settings.upiId || ''}">
+        </div>
+        <button class="small-btn solid" id="saveUpiBtn">Save</button>
+        ${settings.upiId ? `<img class="qr-preview" src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=${encodeURIComponent('upi://pay?pa='+encodeURIComponent(settings.upiId)+'&pn=ZestyGreens&cu=INR')}" alt="QR preview">` : ''}
+      </div>
+
+      <div class="section-title"><h3>🔑 Change PIN</h3></div>
+      <div class="settings-card">
+        <div class="form-field"><label>Current PIN</label><input id="curPinInput" type="password" maxlength="6"></div>
+        <div class="form-field"><label>New PIN</label><input id="newPinInput" type="password" maxlength="6"></div>
+        <button class="small-btn solid" id="changePinBtn">Update PIN</button>
+        <div style="width:100%; font-size:12px; color:var(--tomato-dark); font-weight:600;">${pinChangeMsg}</div>
+      </div>
+
+      <div class="section-title"><h3>📦 Inventory</h3></div>
+      <table>
+        <thead><tr><th>Item</th><th>Category</th><th>Price (₹)</th><th>Stock</th><th>Unit</th><th></th></tr></thead>
+        <tbody>${invRows}</tbody>
+      </table>
+
+      <div class="section-title"><h3>➕ Add new item</h3></div>
+      <div class="add-item-card">
+        <div class="form-field"><label>Emoji</label><input id="newEmoji" placeholder="🥕" style="width:60px;"></div>
+        <div class="form-field"><label>Name</label><input id="newName" placeholder="e.g. Radish"></div>
+        <div class="form-field"><label>Category</label><input id="newCategory" placeholder="e.g. Vegetables"></div>
+        <div class="form-field"><label>Price (₹)</label><input id="newPrice" type="number" min="0" placeholder="30"></div>
+        <div class="form-field"><label>Stock</label><input id="newStock" type="number" min="0" placeholder="10"></div>
+        <div class="form-field"><label>Unit</label><input id="newUnit" placeholder="kg"></div>
+        <button class="small-btn solid" id="addItemBtn">Add item</button>
+      </div>
+
+      <div class="section-title"><h3>🧾 Orders (${orders.length})</h3></div>
+      ${orderCards || '<div class="empty-state">No orders yet.</div>'}
+    `;
+  }
+
+  function attachHandlers(){
+    if(gateStep === 'pin'){
+      const btn = document.getElementById('pinSubmit');
+      const inp = document.getElementById('pinInput');
+      const submit = ()=>{
+        if(inp.value === settings.ownerPin){ gateError=''; sendOtp(); }
+        else{ gateError = 'Incorrect PIN'; render(); }
+      };
+      btn.onclick = submit;
+      inp.onkeydown = (e)=>{ if(e.key==='Enter') submit(); };
+    }
+    else if(gateStep === 'otp'){
+      const btn = document.getElementById('otpSubmit');
+      const inp = document.getElementById('otpInput');
+      const resend = document.getElementById('resendOtp');
+      const submit = async ()=>{
+        gateError = '';
+        try{
+          await confirmationResult.confirm(inp.value.trim());
+          gateStep = 'unlocked';
+          render();
+          showToast('Signed in');
+        }catch(e){
+          gateError = 'Incorrect or expired code';
+          render();
+        }
+      };
+      btn.onclick = submit;
+      inp.onkeydown = (e)=>{ if(e.key==='Enter') submit(); };
+      resend.onclick = sendOtp;
+    }
+    else if(gateStep === 'unlocked'){
+      document.getElementById('lockOwner').onclick = async ()=>{
+        try{ await signOut(auth); }catch(e){}
+        gateStep = 'pin'; gateError=''; confirmationResult=null;
+        render();
+      };
+
+      document.querySelectorAll('.edit-price').forEach(inp=>{
+        inp.onchange = async ()=>{
+          const it = items.find(i=>i.id===inp.dataset.id);
+          it.price = Math.max(0, parseFloat(inp.value)||0);
+          await saveItems(); showToast('Price updated');
+        };
+      });
+      document.querySelectorAll('.edit-stock').forEach(inp=>{
+        inp.onchange = async ()=>{
+          const it = items.find(i=>i.id===inp.dataset.id);
+          it.stock = Math.max(0, parseInt(inp.value)||0);
+          await saveItems(); showToast('Stock updated');
+        };
+      });
+      document.querySelectorAll('.edit-unit').forEach(inp=>{
+        inp.onchange = async ()=>{
+          const it = items.find(i=>i.id===inp.dataset.id);
+          it.unit = inp.value || it.unit;
+          await saveItems(); showToast('Unit updated');
+        };
+      });
+      document.querySelectorAll('[data-del]').forEach(b=>{
+        b.onclick = async ()=>{
+          if(!confirm('Remove this item from the shop?')) return;
+          items = items.filter(i=>i.id!==b.dataset.del);
+          await saveItems(); render(); showToast('Item removed');
+        };
+      });
+      const addBtn = document.getElementById('addItemBtn');
+      if(addBtn) addBtn.onclick = handleAddItem;
+
+      document.querySelectorAll('.status-select').forEach(sel=>{
+        sel.onchange = async ()=>{
+          const o = orders.find(o=>o.code===sel.dataset.order);
+          o.status = sel.value;
+          await saveOrders(); showToast('Order status updated');
+        };
+      });
+
+      document.querySelectorAll('[data-confirm-pay]').forEach(b=>{
+        b.onclick = async ()=>{
+          const o = orders.find(o=>o.code===b.dataset.confirmPay);
+          if(!o) return;
+          o.paymentStatus = 'Confirmed';
+          await saveOrders();
+          render();
+          showToast('Payment marked as confirmed — customer will see this automatically');
+        };
+      });
+
+      const saveUpiBtn = document.getElementById('saveUpiBtn');
+      if(saveUpiBtn) saveUpiBtn.onclick = async ()=>{
+        settings.upiId = document.getElementById('upiIdInput').value.trim();
+        await saveSettings();
+        render();
+        showToast('UPI ID saved');
+      };
+
+      const changePinBtn = document.getElementById('changePinBtn');
+      if(changePinBtn) changePinBtn.onclick = async ()=>{
+        const cur = document.getElementById('curPinInput').value;
+        const next = document.getElementById('newPinInput').value;
+        if(cur !== settings.ownerPin){ pinChangeMsg = 'Current PIN is incorrect'; render(); return; }
+        if(!next || next.length < 4){ pinChangeMsg = 'New PIN must be at least 4 digits'; render(); return; }
+        settings.ownerPin = next;
+        await saveSettings();
+        pinChangeMsg = '';
+        render();
+        showToast('PIN updated');
+      };
+    }
+  }
+
+  async function handleAddItem(){
+    const emoji = document.getElementById('newEmoji').value.trim() || '🥗';
+    const name = document.getElementById('newName').value.trim();
+    const category = document.getElementById('newCategory').value.trim() || 'Vegetables';
+    const price = parseFloat(document.getElementById('newPrice').value) || 0;
+    const stock = parseInt(document.getElementById('newStock').value) || 0;
+    const unit = document.getElementById('newUnit').value.trim() || 'kg';
+    if(!name){ showToast('Please enter an item name'); return; }
+    const id = 'i' + Date.now();
+    items.push({ id, name, emoji, category, price, stock, unit });
+    await saveItems();
+    render();
+    showToast(name + ' added to shop');
+  }
+
+  async function init(){
+    document.getElementById('main').innerHTML = '<div class="empty-state">Loading…</div>';
+    await loadData();
+    render();
+  }
+  init();
+
+})();
+</script>
+</body>
+</html>

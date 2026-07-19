@@ -111,10 +111,17 @@
   .customer-row .cmeta{ color:var(--ink-soft); font-size:12px; }
   .customer-row .ctotal{ font-family:'Space Mono'; font-weight:700; color:var(--forest); }
 
+  .quick-nav{ position:sticky; top:0; z-index:35; display:flex; gap:6px; background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:6px; margin-bottom:6px; box-shadow:var(--shadow); flex-wrap:wrap; }
+  .quick-nav button{ border:none; background:#F3F5EE; color:var(--ink-soft); padding:8px 13px; border-radius:7px; font-weight:700; font-size:12.5px; }
+  .quick-nav button:hover{ background:var(--leaf-light); color:var(--forest); }
+  .reset-pin-card{ background:var(--tag); border:1px solid #C9B98A; border-radius:12px; padding:14px 16px; margin-bottom:14px; }
+  .reset-pin-card h4{ margin:0 0 10px; font-size:14px; }
+  .reset-pin-card .btn-row{ margin-top:10px; }
+
   .qr-preview{ width:100px; height:100px; border-radius:8px; border:1px solid var(--line); }
 
   @media print{
-    header.top, .no-print, .small-btn, #recaptcha-container, .toast, .date-filter { display:none !important; }
+    header.top, .no-print, .small-btn, #recaptcha-container, .toast, .date-filter, .quick-nav { display:none !important; }
     .print-only-label{ display:block !important; font-weight:700; margin:-6px 0 14px; }
     body{ background:#fff; }
     main{ padding-top:10px; }
@@ -150,7 +157,7 @@
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, doc, getDoc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, doc, getDoc, setDoc, onSnapshot, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import { getAuth, RecaptchaVerifier, signInWithPhoneNumber, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 /* =========================================================================
@@ -163,12 +170,12 @@ import { getAuth, RecaptchaVerifier, signInWithPhoneNumber, signOut } from "http
       inside the app under Change PIN once signed in.
    ========================================================================= */
 const firebaseConfig = {
-    apiKey: "AIzaSyDKy9R1cXcIFhzyYJTO5p-7pfreoLGrFdY",
+  apiKey: "AIzaSyDKy9R1cXcIFhzyYJTO5p-7pfreoLGrFdY",
     authDomain: "zestygreens-from-aru.firebaseapp.com",
     projectId: "zestygreens-from-aru",
     storageBucket: "zestygreens-from-aru.firebasestorage.app",
     messagingSenderId: "2139881949",
-    appId: "1:2139881949:web:ad34224d26043d2a8ab634",
+    appId: "1:2139881949:web:ad34224d26043d2a8ab634"
 };
 const OWNER_PHONE = "+918056023410";
 const DEFAULT_PIN = "0202";
@@ -179,6 +186,8 @@ const auth = getAuth(firebaseApp);
 const itemsDocRef = doc(db, 'shop', 'items');
 const ordersDocRef = doc(db, 'shop', 'orders');
 const settingsDocRef = doc(db, 'shop', 'settings');
+const customersCollectionRef = collection(db, 'customers');
+function customerDocRef(id){ return doc(db, 'customers', id); }
 
 (function(){
 
@@ -191,6 +200,10 @@ const settingsDocRef = doc(db, 'shop', 'settings');
   let recaptchaVerifier = null;
   let sendingOtp = false;
   let pinChangeMsg = '';
+  let customers = [];
+  let customerSearch = '';
+  let resetPinTarget = null; // { id, name }
+  let resetPinMsg = '';
 
   let reportFrom = '';
   let reportTo = '';
@@ -203,6 +216,18 @@ const settingsDocRef = doc(db, 'shop', 'settings');
       promise,
       new Promise((_,reject)=>setTimeout(()=>reject(new Error('timeout')), ms))
     ]);
+  }
+
+  async function sha256Hex(text){
+    const enc = new TextEncoder().encode(text);
+    const buf = await crypto.subtle.digest('SHA-256', enc);
+    return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+  }
+  function randomSalt(){
+    return Array.from(crypto.getRandomValues(new Uint8Array(16))).map(b=>b.toString(16).padStart(2,'0')).join('');
+  }
+  async function hashSecret(secret, salt){
+    return sha256Hex(salt + ':' + String(secret).trim().toLowerCase());
   }
 
   async function loadData(){
@@ -219,6 +244,11 @@ const settingsDocRef = doc(db, 'shop', 'settings');
       if(snap.exists()){ settings = { upiId:'', ownerPin: DEFAULT_PIN, ...snap.data() }; }
       else{ settings = { upiId:'', ownerPin: DEFAULT_PIN }; await setDoc(settingsDocRef, settings); }
     }catch(e){ settings = { upiId:'', ownerPin: DEFAULT_PIN }; }
+    try{
+      const snap = await withTimeout(getDocs(customersCollectionRef));
+      customers = [];
+      snap.forEach(docSnap=>{ customers.push({ id: docSnap.id, ...docSnap.data() }); });
+    }catch(e){ customers = []; showToast('Could not load customer list'); }
 
     onSnapshot(itemsDocRef, (snap)=>{ if(snap.exists()){ items = snap.data().list; if(gateStep==='unlocked') render(); } });
     onSnapshot(ordersDocRef, (snap)=>{ if(snap.exists()){ orders = snap.data().list; if(gateStep==='unlocked') render(); } });
@@ -235,6 +265,10 @@ const settingsDocRef = doc(db, 'shop', 'settings');
   async function saveSettings(){
     try{ await setDoc(settingsDocRef, settings); }
     catch(e){ showToast('Could not save — check your connection'); }
+  }
+  async function saveCustomer(customer){
+    const toSave = { ...customer }; delete toSave.id;
+    await setDoc(customerDocRef(customer.id), toSave);
   }
 
   function showToast(msg){
@@ -509,7 +543,47 @@ const settingsDocRef = doc(db, 'shop', 'settings');
         <td data-label=""><button class="del-btn" data-photo="${it.id}" style="color:var(--forest); margin-right:8px;">📷 Photo</button><input type="file" accept="image/*" capture="environment" class="photo-input" data-photo-input="${it.id}" style="display:none;"><button class="del-btn" data-del="${it.id}">Remove</button></td>
       </tr>`).join('');
 
+    const searchLower = customerSearch.trim().toLowerCase();
+    const filteredCustomers = customers.filter(c=>{
+      if(!searchLower) return true;
+      return (c.name||'').toLowerCase().includes(searchLower)
+        || (c.email||'').toLowerCase().includes(searchLower)
+        || (c.mobile||'').toLowerCase().includes(searchLower);
+    });
+    const customerRows = filteredCustomers.map(c => `
+      <tr>
+        <td data-label="Name">${c.name||''}</td>
+        <td data-label="Mobile">${c.mobile||''}</td>
+        <td data-label="Email" class="mono" style="font-size:12px;">${c.email||''}</td>
+        <td data-label="Address">${c.savedAddress || '<span style="color:var(--ink-soft);">— none saved —</span>'}</td>
+        <td data-label=""><button class="del-btn" data-reset-pin="${c.id}" data-reset-pin-name="${c.name||c.email}" style="color:var(--forest);">🔑 Reset PIN</button></td>
+      </tr>`).join('');
+
+    const resetPinCard = resetPinTarget ? `
+      <div class="reset-pin-card">
+        <h4>Reset PIN for ${resetPinTarget.name}</h4>
+        <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end;">
+          <div class="form-field" style="margin:0;"><label>New 6-digit PIN</label><input id="resetPinNew" maxlength="6" inputmode="numeric" style="width:120px;"></div>
+          <div class="form-field" style="margin:0;"><label>Confirm PIN</label><input id="resetPinConfirm" maxlength="6" inputmode="numeric" style="width:120px;"></div>
+        </div>
+        <div style="font-size:12px; color:var(--tomato-dark); font-weight:600; margin-top:6px;">${resetPinMsg}</div>
+        <div class="btn-row">
+          <button class="small-btn solid" id="resetPinConfirmBtn">Set new PIN</button>
+          <button class="small-btn" id="resetPinCancelBtn">Cancel</button>
+        </div>
+        <div style="font-size:11.5px; color:var(--ink-soft); margin-top:8px;">Share this new PIN with the customer directly (phone/message) — they'll use it immediately to sign in.</div>
+      </div>` : '';
+
+    const quickNav = `
+      <div class="quick-nav no-print">
+        <button data-scroll="section-reports">📊 Reports</button>
+        <button data-scroll="section-customers">👥 Customers</button>
+        <button data-scroll="section-inventory">📦 Inventory</button>
+        <button data-scroll="section-orders">🧾 Orders</button>
+      </div>`;
+
     const statusOptions = ['New','Preparing','Ready','Completed'];
+
     const orderCards = [...orders].reverse().map(o => {
       const itemsLine = o.items.map(x=>`${x.qty}× ${x.name}`).join(', ');
       const opts = statusOptions.map(s=>`<option value="${s}" ${s===o.status?'selected':''}>${s}</option>`).join('');
@@ -537,7 +611,20 @@ const settingsDocRef = doc(db, 'shop', 'settings');
         <h3>Manage Shop</h3>
         <button class="small-btn" id="lockOwner">Sign out</button>
       </div>
-      ${renderReports()}
+      ${quickNav}
+      <div id="section-reports">${renderReports()}</div>
+
+      <div id="section-customers">
+        <div class="section-title"><h3>👥 Customers</h3></div>
+        <div class="settings-card">
+          <div class="form-field" style="min-width:260px;"><label>Search by name, email, or mobile</label><input id="customerSearchInput" placeholder="e.g. Priya or 98765" value="${customerSearch}"></div>
+        </div>
+        ${resetPinCard}
+        <table>
+          <thead><tr><th>Name</th><th>Mobile</th><th>Email</th><th>Address</th><th></th></tr></thead>
+          <tbody>${customerRows || `<tr><td colspan="5" style="text-align:center; color:var(--ink-soft);">${customers.length ? 'No customers match your search.' : 'No registered customers yet.'}</td></tr>`}</tbody>
+        </table>
+      </div>
 
       <div class="no-print">
       <div class="section-title"><h3>💳 Payment settings</h3></div>
@@ -558,11 +645,13 @@ const settingsDocRef = doc(db, 'shop', 'settings');
         <div style="width:100%; font-size:12px; color:var(--tomato-dark); font-weight:600;">${pinChangeMsg}</div>
       </div>
 
+      <div id="section-inventory">
       <div class="section-title"><h3>📦 Inventory</h3></div>
       <table>
         <thead><tr><th>Item</th><th>Category</th><th>Price (₹)</th><th>Stock</th><th>Unit</th><th></th></tr></thead>
         <tbody>${invRows}</tbody>
       </table>
+      </div>
 
       <div class="section-title"><h3>➕ Add new item</h3></div>
       <div class="add-item-card" style="flex-direction:column; align-items:stretch;">
@@ -589,8 +678,10 @@ const settingsDocRef = doc(db, 'shop', 'settings');
         </div>
       </div>
 
+      <div id="section-orders">
       <div class="section-title"><h3>🧾 Orders (${orders.length})</h3></div>
       ${orderCards || '<div class="empty-state">No orders yet.</div>'}
+      </div>
       </div>
     `;
   }
@@ -637,6 +728,51 @@ const settingsDocRef = doc(db, 'shop', 'settings');
       if(exportBtn) exportBtn.onclick = exportCSV;
       const printBtn = document.getElementById('printReportBtn');
       if(printBtn) printBtn.onclick = ()=>window.print();
+
+      document.querySelectorAll('[data-scroll]').forEach(b=>{
+        b.onclick = ()=>{
+          const target = document.getElementById(b.dataset.scroll);
+          if(target) target.scrollIntoView({ behavior:'smooth', block:'start' });
+        };
+      });
+
+      const custSearchInput = document.getElementById('customerSearchInput');
+      if(custSearchInput){
+        custSearchInput.oninput = ()=>{
+          customerSearch = custSearchInput.value;
+          const caret = custSearchInput.selectionStart;
+          render();
+          const freshInput = document.getElementById('customerSearchInput');
+          if(freshInput){ freshInput.focus(); freshInput.setSelectionRange(caret, caret); }
+        };
+      }
+      document.querySelectorAll('[data-reset-pin]').forEach(b=>{
+        b.onclick = ()=>{
+          resetPinTarget = { id: b.dataset.resetPin, name: b.dataset.resetPinName };
+          resetPinMsg = '';
+          render();
+        };
+      });
+      const resetCancelBtn = document.getElementById('resetPinCancelBtn');
+      if(resetCancelBtn) resetCancelBtn.onclick = ()=>{ resetPinTarget = null; resetPinMsg=''; render(); };
+      const resetConfirmBtn = document.getElementById('resetPinConfirmBtn');
+      if(resetConfirmBtn) resetConfirmBtn.onclick = async ()=>{
+        const pin = document.getElementById('resetPinNew').value.trim();
+        const pinConfirm = document.getElementById('resetPinConfirm').value.trim();
+        if(!/^\d{6}$/.test(pin)){ resetPinMsg = 'PIN must be exactly 6 digits'; render(); return; }
+        if(pin !== pinConfirm){ resetPinMsg = 'PINs do not match'; render(); return; }
+        try{
+          const cust = customers.find(c=>c.id===resetPinTarget.id);
+          if(!cust){ resetPinMsg = 'Customer not found'; render(); return; }
+          const pinSalt = randomSalt();
+          cust.pinHash = await hashSecret(pin, pinSalt);
+          cust.pinSalt = pinSalt;
+          await saveCustomer(cust);
+          showToast(`PIN reset for ${cust.name} — share ${pin} with them directly`);
+          resetPinTarget = null; resetPinMsg='';
+          render();
+        }catch(e){ resetPinMsg = 'Could not update — check your connection'; render(); }
+      };
 
       const fromInput = document.getElementById('reportFromInput');
       if(fromInput) fromInput.onchange = ()=>{ reportFrom = fromInput.value; render(); };

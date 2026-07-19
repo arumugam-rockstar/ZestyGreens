@@ -25,8 +25,11 @@
   .brand-mark{ width:42px; height:42px; border-radius:10px; background: var(--leaf); display:flex; align-items:center; justify-content:center; font-size:22px; transform: rotate(-4deg); box-shadow: 0 3px 0 rgba(0,0,0,0.15); }
   .brand h1{ margin:0; font-size:22px; color:#fff; line-height:1.1; }
   .brand span{ display:block; font-size:11.5px; color:#B9C9AE; letter-spacing:.06em; text-transform:uppercase; margin-top:3px;}
-  .cart-pill{ display:flex; align-items:center; gap:8px; background: var(--tomato); color:#fff; border:none; padding:10px 16px; border-radius: 999px; font-weight:700; font-size:14px; box-shadow: var(--shadow); }
+  .header-actions{ display:flex; gap:8px; align-items:center; }
+  .pill-btn{ display:flex; align-items:center; gap:8px; border:none; padding:10px 16px; border-radius: 999px; font-weight:700; font-size:14px; box-shadow: var(--shadow); }
+  .cart-pill{ background: var(--tomato); color:#fff; }
   .cart-pill .count{ background:rgba(255,255,255,0.25); border-radius:999px; padding:1px 8px; font-family:'Space Mono'; }
+  .account-pill{ background:rgba(255,255,255,0.12); color:#fff; }
 
   main{ max-width:1080px; margin:0 auto; padding: 28px 24px 80px; }
 
@@ -77,12 +80,15 @@
   .checkout-btn{ width:100%; border:none; background:var(--tomato); color:#fff; padding:13px; border-radius:11px; font-weight:700; font-size:15px; }
   .checkout-btn:disabled{ background:#B9BBAF; }
   .checkout-btn.outline{ background:#fff; color:var(--forest); border:2px solid var(--forest); }
+  .checkout-btn.secondary{ background:var(--forest); }
+  .checkout-btn.small{ padding:9px; font-size:13px; border-radius:8px; }
 
   .form-field{ margin-bottom:12px; }
   .form-field label{ display:block; font-size:12.5px; font-weight:600; color:var(--ink-soft); margin-bottom:5px; }
-  .form-field input, .form-field textarea{ width:100%; border:1px solid var(--line); border-radius:9px; padding:10px 11px; font-family:inherit; font-size:14px; background:#FBFAF5; }
+  .form-field input, .form-field textarea, .form-field select{ width:100%; border:1px solid var(--line); border-radius:9px; padding:10px 11px; font-family:inherit; font-size:14px; background:#FBFAF5; }
   .form-field textarea{ resize:vertical; min-height:56px; }
   .back-link{ background:none; border:none; color:var(--forest); font-weight:600; font-size:13px; padding:0; margin-bottom:14px; }
+  .check-row{ display:flex; align-items:center; gap:8px; font-size:13px; color:var(--ink-soft); margin:-4px 0 14px; }
 
   .confirm-box{ text-align:center; padding:20px 10px 10px; }
   .confirm-box .big-emoji{ font-size:46px; }
@@ -102,9 +108,23 @@
   .thanks-banner{ background:var(--leaf); color:#fff; border-radius:10px; padding:12px 14px; font-weight:700; font-size:13.5px; margin-top:12px; text-align:center; }
   .awaiting-banner{ background:var(--tag); color:var(--tomato-dark); border-radius:10px; padding:10px 14px; font-weight:600; font-size:12.5px; margin-top:12px; text-align:center; }
 
-  .toast{ position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(20px); background:var(--forest); color:#fff; padding:12px 20px; border-radius:10px; font-size:14px; font-weight:600; opacity:0; transition:all .25s ease; z-index:80; pointer-events:none; box-shadow:0 8px 20px rgba(0,0,0,0.25); }
+  .toast{ position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(20px); background:var(--forest); color:#fff; padding:12px 20px; border-radius:10px; font-size:14px; font-weight:600; opacity:0; transition:all .25s ease; z-index:80; pointer-events:none; box-shadow:0 8px 20px rgba(0,0,0,0.25); max-width:88vw; text-align:center; }
   .toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
   .empty-state{ text-align:center; color:var(--ink-soft); padding:50px 10px; }
+
+  .auth-tabs{ display:flex; gap:6px; background:#F3F5EE; padding:4px; border-radius:10px; margin-bottom:16px; }
+  .auth-tabs button{ flex:1; border:none; background:transparent; padding:9px; border-radius:7px; font-weight:700; font-size:13.5px; color:var(--ink-soft); }
+  .auth-tabs button.active{ background:#fff; color:var(--forest); box-shadow:var(--shadow); }
+  .error-text{ color:var(--tomato-dark); font-size:12.5px; font-weight:600; margin:-6px 0 12px; min-height:14px; }
+  .account-menu-item{ display:flex; align-items:center; justify-content:space-between; padding:13px 4px; border-bottom:1px solid #EFEDE3; font-size:14px; font-weight:600; }
+  .account-menu-item span.arrow{ color:var(--ink-soft); font-weight:400; }
+  .account-header{ text-align:center; padding:6px 0 18px; }
+  .account-header .avatar{ width:52px; height:52px; border-radius:50%; background:var(--leaf-light); color:var(--forest); display:flex; align-items:center; justify-content:center; font-size:22px; font-weight:700; margin:0 auto 8px; }
+  .history-card{ background:#FBFAF5; border:1px solid var(--line); border-radius:11px; padding:12px 14px; margin-bottom:10px; }
+  .history-card .hc-top{ display:flex; justify-content:space-between; font-size:13px; font-weight:700; }
+  .history-card .hc-items{ color:var(--ink-soft); font-size:12.5px; margin:5px 0 8px; }
+  .history-card .hc-badges{ display:flex; gap:6px; flex-wrap:wrap; margin-bottom:8px; }
+  .mini-badge{ font-size:10.5px; font-weight:700; padding:2px 8px; border-radius:999px; background:var(--leaf-light); color:#3D6428; }
 
   @media(max-width:640px){ .hero h2{ font-size:24px; } }
 </style>
@@ -117,7 +137,10 @@
       <div class="brand-mark">🥬</div>
       <div><h1>ZestyGreens</h1><span>from Aru</span></div>
     </div>
-    <button class="cart-pill" id="cartBtn">🧺 Cart <span class="count" id="cartCount">0</span></button>
+    <div class="header-actions">
+      <button class="pill-btn account-pill" id="accountBtn">👤 <span id="accountLabel">Account</span></button>
+      <button class="pill-btn cart-pill" id="cartBtn">🧺 Cart <span class="count" id="cartCount">0</span></button>
+    </div>
   </div>
 </header>
 
@@ -132,13 +155,12 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import { getFirestore, doc, getDoc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyDKy9R1cXcIFhzyYJTO5p-7pfreoLGrFdY",
-    authDomain: "zestygreens-from-aru.firebaseapp.com",
-    projectId: "zestygreens-from-aru",
-    storageBucket: "zestygreens-from-aru.firebasestorage.app",
-    messagingSenderId: "2139881949",
-    appId: "1:2139881949:web:ad34224d26043d2a8ab634",
-    measurementId: "G-ZM60QDBKR2"
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
 };
 
 const firebaseApp = initializeApp(firebaseConfig);
@@ -146,8 +168,18 @@ const db = getFirestore(firebaseApp);
 const itemsDocRef = doc(db, 'shop', 'items');
 const ordersDocRef = doc(db, 'shop', 'orders');
 const settingsDocRef = doc(db, 'shop', 'settings');
+function customerDocRef(id){ return doc(db, 'customers', id); }
 
 (function(){
+
+  const SECURITY_QUESTIONS = [
+    "What is your favorite vegetable?",
+    "What was the name of your first pet?",
+    "What is your mother's maiden name?",
+    "What city were you born in?",
+    "What was your childhood nickname?",
+    "What is your favorite festival?"
+  ];
 
   let items = [];
   let orders = [];
@@ -157,6 +189,13 @@ const settingsDocRef = doc(db, 'shop', 'settings');
   let checkoutStep = 'cart';
   let pendingOrder = null;
   let liveOrderCode = '';
+
+  let panelMode = 'cart';
+  let accountStep = 'signin';
+  let currentCustomer = null;
+  let accountError = '';
+  let forgotCustomer = null;
+  let saveAddressChecked = true;
 
   const DEFAULT_ITEMS = [
     { id:'i1', name:'Tomato', emoji:'🍅', unit:'kg', price:40, stock:25, category:'Vegetables' },
@@ -172,6 +211,21 @@ const settingsDocRef = doc(db, 'shop', 'settings');
     { id:'i11', name:'Corn', emoji:'🌽', unit:'piece', price:20, stock:22, category:'Vegetables' },
     { id:'i12', name:'Beans', emoji:'🫛', unit:'kg', price:45, stock:14, category:'Vegetables' },
   ];
+
+  async function sha256Hex(text){
+    const enc = new TextEncoder().encode(text);
+    const buf = await crypto.subtle.digest('SHA-256', enc);
+    return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+  }
+  function randomSalt(){
+    return Array.from(crypto.getRandomValues(new Uint8Array(16))).map(b=>b.toString(16).padStart(2,'0')).join('');
+  }
+  async function hashSecret(secret, salt){
+    return sha256Hex(salt + ':' + String(secret).trim().toLowerCase());
+  }
+  function emailToId(email){
+    return email.trim().toLowerCase();
+  }
 
   function withTimeout(promise, ms=6000){
     return Promise.race([
@@ -213,6 +267,14 @@ const settingsDocRef = doc(db, 'shop', 'settings');
       }
     });
     onSnapshot(settingsDocRef, (snap)=>{ if(snap.exists()) settings = snap.data(); });
+
+    try{
+      const rememberedEmail = localStorage.getItem('zg_customer_email');
+      if(rememberedEmail){
+        const snap = await withTimeout(getDoc(customerDocRef(emailToId(rememberedEmail))));
+        if(snap.exists()){ currentCustomer = { id: emailToId(rememberedEmail), ...snap.data() }; }
+      }
+    }catch(e){ }
   }
   async function saveItems(){
     try{ await setDoc(itemsDocRef, { list: items }); }
@@ -228,9 +290,13 @@ const settingsDocRef = doc(db, 'shop', 'settings');
     t.textContent = msg;
     t.classList.add('show');
     clearTimeout(showToast._h);
-    showToast._h = setTimeout(()=>t.classList.remove('show'), 2600);
+    showToast._h = setTimeout(()=>t.classList.remove('show'), 2800);
   }
   function money(n){ return '₹' + n.toFixed(0); }
+  function iconHtml(it, px){
+    if(it.photo) return `<img src="${it.photo}" alt="${it.name}" style="width:${px}px;height:${px}px;object-fit:cover;border-radius:8px;vertical-align:middle;">`;
+    return `<span style="font-size:${px}px;line-height:1;">${it.emoji}</span>`;
+  }
   function cartCount(){ return Object.values(cart).reduce((a,b)=>a+b,0); }
   function cartTotal(){
     return Object.entries(cart).reduce((sum,[id,qty])=>{
@@ -241,6 +307,7 @@ const settingsDocRef = doc(db, 'shop', 'settings');
 
   function render(){
     document.getElementById('cartCount').textContent = cartCount();
+    document.getElementById('accountLabel').textContent = currentCustomer ? (currentCustomer.name.split(' ')[0]) : 'Account';
     document.getElementById('main').innerHTML = renderShop();
     renderDrawer();
     attachShopHandlers();
@@ -261,7 +328,7 @@ const settingsDocRef = doc(db, 'shop', 'settings');
       <div class="card">
         <div class="slats"></div>
         ${out ? '<div class="sold-stamp">SOLD OUT</div>' : ''}
-        <div class="emoji">${it.emoji}</div>
+        <div class="emoji">${iconHtml(it, 38)}</div>
         <h3>${it.name}</h3>
         <div class="unit">per ${it.unit}</div>
         <div class="tag">${money(it.price)}</div>
@@ -294,6 +361,7 @@ const settingsDocRef = doc(db, 'shop', 'settings');
   }
 
   function renderDrawer(){
+    if(panelMode === 'account'){ renderAccountPanel(); return; }
     const drawer = document.getElementById('drawer');
 
     if(checkoutStep === 'cart'){
@@ -303,7 +371,7 @@ const settingsDocRef = doc(db, 'shop', 'settings');
         if(!it) return '';
         return `
         <div class="cart-item">
-          <div class="ci-emoji">${it.emoji}</div>
+          <div class="ci-emoji">${iconHtml(it, 26)}</div>
           <div class="ci-info"><b>${it.name}</b><div>${qty} × ${money(it.price)} / ${it.unit}</div></div>
           <div class="ci-price">${money(it.price*qty)}</div>
           <button class="ci-remove" data-remove="${id}">✕</button>
@@ -319,14 +387,17 @@ const settingsDocRef = doc(db, 'shop', 'settings');
         </div>`;
     }
     else if(checkoutStep === 'form'){
+      const c = currentCustomer;
       drawer.innerHTML = `
         <div class="drawer-head"><h3>Checkout</h3><button data-close-cart>✕</button></div>
         <div class="drawer-body">
           <button class="back-link" id="backToCart">← Back to cart</button>
-          <div class="form-field"><label>Your name</label><input id="fName" placeholder="e.g. Priya"></div>
-          <div class="form-field"><label>Phone number</label><input id="fPhone" placeholder="e.g. 98765 43210"></div>
-          <div class="form-field"><label>Delivery address</label><textarea id="fAddress" placeholder="House no, street, area"></textarea></div>
+          ${!c ? `<div class="awaiting-banner" style="margin-bottom:14px;">Sign in for faster checkout, saved address, and order history — or continue as guest below.</div>` : ''}
+          <div class="form-field"><label>Your name</label><input id="fName" placeholder="e.g. Priya" value="${c ? c.name : ''}"></div>
+          <div class="form-field"><label>Phone number</label><input id="fPhone" placeholder="e.g. 98765 43210" value="${c ? c.mobile : ''}"></div>
+          <div class="form-field"><label>Delivery address</label><textarea id="fAddress" placeholder="House no, street, area">${c && c.savedAddress ? c.savedAddress : ''}</textarea></div>
           <div class="form-field"><label>Note (optional)</label><textarea id="fNote" placeholder="e.g. call before delivering"></textarea></div>
+          ${c ? `<label class="check-row"><input type="checkbox" id="fSaveAddress" ${saveAddressChecked?'checked':''}> Save this address to my account</label>` : ''}
         </div>
         <div class="drawer-foot">
           <div class="total-row"><span>Total</span><span>${money(cartTotal())}</span></div>
@@ -367,6 +438,9 @@ const settingsDocRef = doc(db, 'shop', 'settings');
       } else {
         const paidUpi = o.paymentMethod === 'UPI';
         const confirmed = o.paymentStatus === 'Confirmed';
+        const awaitingText = paidUpi
+          ? 'Waiting for the shop to confirm your UPI payment — this updates automatically.'
+          : 'Waiting for the shop to confirm cash payment on delivery — this updates automatically.';
         drawer.innerHTML = `
           <div class="drawer-head"><h3>Order placed</h3><button data-close-cart>✕</button></div>
           <div class="drawer-body">
@@ -379,10 +453,9 @@ const settingsDocRef = doc(db, 'shop', 'settings');
                 <div class="row"><span>Order status</span><b>${o.status}</b></div>
                 <div class="row"><span>Payment</span><b>${paidUpi ? 'UPI' : 'Cash on delivery'}</b></div>
               </div>
-              ${paidUpi ? (confirmed
+              ${confirmed
                 ? `<div class="thanks-banner">🙏 Thanks! Your payment has been received and confirmed by the shop.</div>`
-                : `<div class="awaiting-banner">Waiting for the shop to confirm your UPI payment — this updates automatically.</div>`)
-                : ``}
+                : `<div class="awaiting-banner">${awaitingText}</div>`}
             </div>
           </div>
           <div class="drawer-foot"><button class="checkout-btn" id="doneOrder">Done</button></div>`;
@@ -391,17 +464,137 @@ const settingsDocRef = doc(db, 'shop', 'settings');
     attachDrawerHandlers();
   }
 
-  function openCart(){ document.getElementById('overlay').classList.add('open'); document.getElementById('drawer').classList.add('open'); }
-  function closeCart(){
+  function openPanel(){ document.getElementById('overlay').classList.add('open'); document.getElementById('drawer').classList.add('open'); }
+  function closePanel(){
     document.getElementById('overlay').classList.remove('open');
     document.getElementById('drawer').classList.remove('open');
-    if(checkoutStep !== 'confirm'){ checkoutStep = 'cart'; renderDrawer(); }
+    if(panelMode === 'cart' && checkoutStep !== 'confirm'){ checkoutStep = 'cart'; renderDrawer(); }
   }
-  function openCartQuiet(){ if(cartCount() === 1){ checkoutStep='cart'; renderDrawer(); openCart(); } }
+  function openCartQuiet(){ if(cartCount() === 1){ panelMode='cart'; checkoutStep='cart'; renderDrawer(); openPanel(); } }
+
+  function renderAccountPanel(){
+    const drawer = document.getElementById('drawer');
+    let head = 'My Account', body = '', foot = '';
+
+    if(accountStep === 'signin'){
+      head = 'Sign in';
+      body = `
+        <div class="auth-tabs">
+          <button class="active" data-auth-tab="signin">Sign in</button>
+          <button data-auth-tab="register">Register</button>
+        </div>
+        <div class="form-field"><label>Email</label><input id="siEmail" type="email" placeholder="you@example.com"></div>
+        <div class="form-field"><label>6-digit PIN</label><input id="siPin" type="password" maxlength="6" inputmode="numeric" placeholder="••••••"></div>
+        <div class="error-text">${accountError}</div>
+        <button class="checkout-btn" id="siSubmit">Sign in</button>
+        <button class="back-link" id="goForgot" style="margin-top:12px;">Forgot PIN?</button>
+        <button class="back-link" id="guestContinue" style="display:block;">Continue as guest</button>`;
+    }
+    else if(accountStep === 'register'){
+      head = 'Create your account';
+      const qOptions = SECURITY_QUESTIONS.map((q,i)=>`<option value="${i}">${q}</option>`).join('');
+      body = `
+        <div class="auth-tabs">
+          <button data-auth-tab="signin">Sign in</button>
+          <button class="active" data-auth-tab="register">Register</button>
+        </div>
+        <div class="form-field"><label>Full name</label><input id="regName" placeholder="e.g. Priya S."></div>
+        <div class="form-field"><label>Email</label><input id="regEmail" type="email" placeholder="you@example.com"></div>
+        <div class="form-field"><label>Mobile number</label><input id="regMobile" placeholder="e.g. 98765 43210"></div>
+        <div class="form-field"><label>Set a 6-digit PIN</label><input id="regPin" type="password" maxlength="6" inputmode="numeric" placeholder="••••••"></div>
+        <div class="form-field"><label>Confirm PIN</label><input id="regPinConfirm" type="password" maxlength="6" inputmode="numeric" placeholder="••••••"></div>
+        <div class="form-field"><label>Security question 1</label><select id="regQ1">${qOptions}</select></div>
+        <div class="form-field"><label>Answer 1</label><input id="regA1" placeholder="Your answer"></div>
+        <div class="form-field"><label>Security question 2</label><select id="regQ2">${SECURITY_QUESTIONS.map((q,i)=>`<option value="${i}" ${i===1?'selected':''}>${q}</option>`).join('')}</select></div>
+        <div class="form-field"><label>Answer 2</label><input id="regA2" placeholder="Your answer"></div>
+        <div class="error-text">${accountError}</div>
+        <button class="checkout-btn" id="regSubmit">Create account</button>`;
+    }
+    else if(accountStep === 'forgot-email'){
+      head = 'Forgot PIN';
+      body = `
+        <button class="back-link" id="backToSignin">← Back to sign in</button>
+        <p style="color:var(--ink-soft); font-size:13.5px;">Enter your account email to answer your security questions.</p>
+        <div class="form-field"><label>Email</label><input id="fgEmail" type="email" placeholder="you@example.com"></div>
+        <div class="error-text">${accountError}</div>
+        <button class="checkout-btn" id="fgFindSubmit">Continue</button>`;
+    }
+    else if(accountStep === 'forgot-questions'){
+      head = 'Answer to reset PIN';
+      body = `
+        <button class="back-link" id="backToForgotEmail">← Back</button>
+        <div class="form-field"><label>${SECURITY_QUESTIONS[forgotCustomer.sq1]}</label><input id="fgA1" placeholder="Your answer"></div>
+        <div class="form-field"><label>${SECURITY_QUESTIONS[forgotCustomer.sq2]}</label><input id="fgA2" placeholder="Your answer"></div>
+        <div class="error-text">${accountError}</div>
+        <button class="checkout-btn" id="fgAnswerSubmit">Verify</button>`;
+    }
+    else if(accountStep === 'forgot-reset'){
+      head = 'Set a new PIN';
+      body = `
+        <div class="form-field"><label>New 6-digit PIN</label><input id="fgNewPin" type="password" maxlength="6" inputmode="numeric" placeholder="••••••"></div>
+        <div class="form-field"><label>Confirm new PIN</label><input id="fgNewPinConfirm" type="password" maxlength="6" inputmode="numeric" placeholder="••••••"></div>
+        <div class="error-text">${accountError}</div>
+        <button class="checkout-btn" id="fgResetSubmit">Update PIN</button>`;
+    }
+    else if(accountStep === 'menu'){
+      const c = currentCustomer;
+      head = 'My Account';
+      body = `
+        <div class="account-header">
+          <div class="avatar">${c.name.charAt(0).toUpperCase()}</div>
+          <div style="font-weight:700;">${c.name}</div>
+          <div style="color:var(--ink-soft); font-size:12.5px;">${c.email}</div>
+        </div>
+        <div class="account-menu-item" data-menu="history" style="cursor:pointer;">📦 Order history <span class="arrow">›</span></div>
+        <div class="account-menu-item" data-menu="address" style="cursor:pointer;">🏠 Saved address <span class="arrow">›</span></div>
+        <div style="margin-top:18px;"><button class="checkout-btn outline" id="signOutBtn">Sign out</button></div>`;
+    }
+    else if(accountStep === 'history'){
+      head = 'Order history';
+      const mine = orders.filter(o=>o.customerEmail === currentCustomer.email).slice().reverse();
+      const cards = mine.map(o=>{
+        const itemsLine = o.items.map(x=>`${x.qty}× ${x.name}`).join(', ');
+        const date = (o.time||'').slice(0,10);
+        return `
+        <div class="history-card">
+          <div class="hc-top"><span>${o.code}</span><span>${money(o.total)}</span></div>
+          <div class="hc-items">${date} · ${itemsLine}</div>
+          <div class="hc-badges">
+            <span class="mini-badge">${o.status}</span>
+            <span class="mini-badge">${o.paymentMethod === 'UPI' ? 'UPI' : 'Cash'} · ${o.paymentStatus === 'Confirmed' ? 'Paid' : 'Pending'}</span>
+          </div>
+          <button class="checkout-btn small" data-reorder="${o.code}">↻ Reorder these items</button>
+        </div>`;
+      }).join('');
+      body = `
+        <button class="back-link" id="backToMenu">← Back</button>
+        ${mine.length ? cards : '<div class="empty-note">No past orders yet.</div>'}`;
+    }
+    else if(accountStep === 'address'){
+      const c = currentCustomer;
+      head = 'Saved address';
+      body = `
+        <button class="back-link" id="backToMenu">← Back</button>
+        <div class="form-field"><label>Delivery address</label><textarea id="addrInput" placeholder="House no, street, area">${c.savedAddress||''}</textarea></div>
+        <button class="checkout-btn" id="addrSave">Save address</button>`;
+    }
+
+    drawer.innerHTML = `
+      <div class="drawer-head"><h3>${head}</h3><button data-close-cart>✕</button></div>
+      <div class="drawer-body">${body}</div>
+      ${foot}`;
+    attachAccountHandlers();
+  }
 
   function attachShopHandlers(){
-    document.getElementById('cartBtn').onclick = ()=>{ if(checkoutStep!=='confirm') checkoutStep='cart'; renderDrawer(); openCart(); };
-    document.getElementById('overlay').onclick = closeCart;
+    document.getElementById('cartBtn').onclick = ()=>{ panelMode='cart'; if(checkoutStep!=='confirm') checkoutStep='cart'; renderDrawer(); openPanel(); };
+    document.getElementById('accountBtn').onclick = ()=>{
+      panelMode='account';
+      accountError='';
+      accountStep = currentCustomer ? 'menu' : 'signin';
+      renderDrawer(); openPanel();
+    };
+    document.getElementById('overlay').onclick = closePanel;
 
     document.querySelectorAll('[data-cat]').forEach(b=>{ b.onclick = ()=>{ category = b.dataset.cat; render(); }; });
     document.querySelectorAll('[data-inc]').forEach(b=>{
@@ -420,15 +613,15 @@ const settingsDocRef = doc(db, 'shop', 'settings');
         render();
       };
     });
-    document.querySelectorAll('[data-open-cart]').forEach(b=>{ b.onclick = ()=>{ checkoutStep='cart'; renderDrawer(); openCart(); }; });
+    document.querySelectorAll('[data-open-cart]').forEach(b=>{ b.onclick = ()=>{ panelMode='cart'; checkoutStep='cart'; renderDrawer(); openPanel(); }; });
   }
 
   function attachDrawerHandlers(){
     const closeBtn = document.querySelector('[data-close-cart]');
-    if(closeBtn) closeBtn.onclick = closeCart;
+    if(closeBtn) closeBtn.onclick = closePanel;
 
     document.querySelectorAll('[data-remove]').forEach(b=>{
-      b.onclick = ()=>{ delete cart[b.dataset.remove]; document.getElementById('cartCount').textContent = cartCount(); document.getElementById('main').innerHTML = renderShop(); attachShopHandlers(); renderDrawer(); openCart(); };
+      b.onclick = ()=>{ delete cart[b.dataset.remove]; document.getElementById('cartCount').textContent = cartCount(); document.getElementById('main').innerHTML = renderShop(); attachShopHandlers(); renderDrawer(); openPanel(); };
     });
 
     const goCheckout = document.getElementById('goCheckout');
@@ -439,6 +632,9 @@ const settingsDocRef = doc(db, 'shop', 'settings');
 
     const continueToPayment = document.getElementById('continueToPayment');
     if(continueToPayment) continueToPayment.onclick = handleContinueToPayment;
+
+    const fSaveAddress = document.getElementById('fSaveAddress');
+    if(fSaveAddress) fSaveAddress.onchange = ()=>{ saveAddressChecked = fSaveAddress.checked; };
 
     const backToForm = document.getElementById('backToForm');
     if(backToForm) backToForm.onclick = ()=>{ checkoutStep='form'; renderDrawer(); };
@@ -451,10 +647,195 @@ const settingsDocRef = doc(db, 'shop', 'settings');
 
     const doneOrder = document.getElementById('doneOrder');
     if(doneOrder) doneOrder.onclick = ()=>{
-      closeCart();
+      closePanel();
       checkoutStep = 'cart'; liveOrderCode=''; pendingOrder=null;
       renderDrawer();
     };
+  }
+
+  function attachAccountHandlers(){
+    const closeBtn = document.querySelector('[data-close-cart]');
+    if(closeBtn) closeBtn.onclick = closePanel;
+
+    document.querySelectorAll('[data-auth-tab]').forEach(b=>{
+      b.onclick = ()=>{ accountStep = b.dataset.authTab; accountError=''; renderDrawer(); };
+    });
+
+    if(accountStep === 'signin'){
+      document.getElementById('siSubmit').onclick = handleSignIn;
+      document.getElementById('goForgot').onclick = ()=>{ accountStep='forgot-email'; accountError=''; renderDrawer(); };
+      document.getElementById('guestContinue').onclick = ()=>{ panelMode='cart'; checkoutStep='cart'; renderDrawer(); openPanel(); };
+    }
+    else if(accountStep === 'register'){
+      document.getElementById('regSubmit').onclick = handleRegister;
+    }
+    else if(accountStep === 'forgot-email'){
+      document.getElementById('backToSignin').onclick = ()=>{ accountStep='signin'; accountError=''; renderDrawer(); };
+      document.getElementById('fgFindSubmit').onclick = handleForgotFindEmail;
+    }
+    else if(accountStep === 'forgot-questions'){
+      document.getElementById('backToForgotEmail').onclick = ()=>{ accountStep='forgot-email'; accountError=''; renderDrawer(); };
+      document.getElementById('fgAnswerSubmit').onclick = handleForgotVerifyAnswers;
+    }
+    else if(accountStep === 'forgot-reset'){
+      document.getElementById('fgResetSubmit').onclick = handleForgotReset;
+    }
+    else if(accountStep === 'menu'){
+      document.querySelectorAll('[data-menu]').forEach(el=>{
+        el.onclick = ()=>{ accountStep = el.dataset.menu === 'history' ? 'history' : 'address'; renderDrawer(); };
+      });
+      document.getElementById('signOutBtn').onclick = ()=>{
+        currentCustomer = null;
+        localStorage.removeItem('zg_customer_email');
+        accountStep = 'signin';
+        renderDrawer();
+        render();
+        showToast('Signed out');
+      };
+    }
+    else if(accountStep === 'history'){
+      document.getElementById('backToMenu').onclick = ()=>{ accountStep='menu'; renderDrawer(); };
+      document.querySelectorAll('[data-reorder]').forEach(b=>{
+        b.onclick = ()=>handleReorder(b.dataset.reorder);
+      });
+    }
+    else if(accountStep === 'address'){
+      document.getElementById('backToMenu').onclick = ()=>{ accountStep='menu'; renderDrawer(); };
+      document.getElementById('addrSave').onclick = handleSaveAddress;
+    }
+  }
+
+  async function handleRegister(){
+    const name = document.getElementById('regName').value.trim();
+    const email = document.getElementById('regEmail').value.trim();
+    const mobile = document.getElementById('regMobile').value.trim();
+    const pin = document.getElementById('regPin').value.trim();
+    const pinConfirm = document.getElementById('regPinConfirm').value.trim();
+    const q1 = parseInt(document.getElementById('regQ1').value);
+    const a1 = document.getElementById('regA1').value.trim();
+    const q2 = parseInt(document.getElementById('regQ2').value);
+    const a2 = document.getElementById('regA2').value.trim();
+
+    if(!name || !email || !mobile){ accountError='Please fill in all fields'; renderDrawer(); return; }
+    if(!/^\d{6}$/.test(pin)){ accountError='PIN must be exactly 6 digits'; renderDrawer(); return; }
+    if(pin !== pinConfirm){ accountError='PINs do not match'; renderDrawer(); return; }
+    if(q1 === q2){ accountError='Please choose two different security questions'; renderDrawer(); return; }
+    if(!a1 || !a2){ accountError='Please answer both security questions'; renderDrawer(); return; }
+
+    const id = emailToId(email);
+    try{
+      const existing = await getDoc(customerDocRef(id));
+      if(existing.exists()){ accountError='An account already exists for this email — try signing in.'; renderDrawer(); return; }
+
+      const pinSalt = randomSalt(), sq1Salt = randomSalt(), sq2Salt = randomSalt();
+      const customer = {
+        name, email, mobile,
+        pinHash: await hashSecret(pin, pinSalt), pinSalt,
+        sq1: q1, sq1AnswerHash: await hashSecret(a1, sq1Salt), sq1Salt,
+        sq2: q2, sq2AnswerHash: await hashSecret(a2, sq2Salt), sq2Salt,
+        savedAddress: '',
+        createdAt: new Date().toISOString()
+      };
+      await setDoc(customerDocRef(id), customer);
+      currentCustomer = { id, ...customer };
+      localStorage.setItem('zg_customer_email', email);
+      accountStep = 'menu'; accountError='';
+      renderDrawer(); render();
+      showToast('Account created — welcome, ' + name.split(' ')[0] + '!');
+    }catch(e){ accountError='Could not create account — check your connection'; renderDrawer(); }
+  }
+
+  async function handleSignIn(){
+    const email = document.getElementById('siEmail').value.trim();
+    const pin = document.getElementById('siPin').value.trim();
+    if(!email || !pin){ accountError='Please enter your email and PIN'; renderDrawer(); return; }
+    try{
+      const id = emailToId(email);
+      const snap = await getDoc(customerDocRef(id));
+      if(!snap.exists()){ accountError='No account found for this email'; renderDrawer(); return; }
+      const c = snap.data();
+      const hash = await hashSecret(pin, c.pinSalt);
+      if(hash !== c.pinHash){ accountError='Incorrect PIN'; renderDrawer(); return; }
+      currentCustomer = { id, ...c };
+      localStorage.setItem('zg_customer_email', email);
+      accountStep = 'menu'; accountError='';
+      renderDrawer(); render();
+      showToast('Signed in — welcome back, ' + c.name.split(' ')[0] + '!');
+    }catch(e){ accountError='Could not sign in — check your connection'; renderDrawer(); }
+  }
+
+  async function handleForgotFindEmail(){
+    const email = document.getElementById('fgEmail').value.trim();
+    if(!email){ accountError='Please enter your email'; renderDrawer(); return; }
+    try{
+      const id = emailToId(email);
+      const snap = await getDoc(customerDocRef(id));
+      if(!snap.exists()){ accountError='No account found for this email'; renderDrawer(); return; }
+      forgotCustomer = { id, ...snap.data() };
+      accountStep = 'forgot-questions'; accountError='';
+      renderDrawer();
+    }catch(e){ accountError='Could not look up that account — check your connection'; renderDrawer(); }
+  }
+
+  async function handleForgotVerifyAnswers(){
+    const a1 = document.getElementById('fgA1').value.trim();
+    const a2 = document.getElementById('fgA2').value.trim();
+    try{
+      const h1 = await hashSecret(a1, forgotCustomer.sq1Salt);
+      const h2 = await hashSecret(a2, forgotCustomer.sq2Salt);
+      if(h1 !== forgotCustomer.sq1AnswerHash || h2 !== forgotCustomer.sq2AnswerHash){
+        accountError = 'One or both answers are incorrect'; renderDrawer(); return;
+      }
+      accountStep = 'forgot-reset'; accountError='';
+      renderDrawer();
+    }catch(e){ accountError='Something went wrong — try again'; renderDrawer(); }
+  }
+
+  async function handleForgotReset(){
+    const pin = document.getElementById('fgNewPin').value.trim();
+    const pinConfirm = document.getElementById('fgNewPinConfirm').value.trim();
+    if(!/^\d{6}$/.test(pin)){ accountError='PIN must be exactly 6 digits'; renderDrawer(); return; }
+    if(pin !== pinConfirm){ accountError='PINs do not match'; renderDrawer(); return; }
+    try{
+      const pinSalt = randomSalt();
+      const updated = { ...forgotCustomer, pinHash: await hashSecret(pin, pinSalt), pinSalt };
+      delete updated.id;
+      await setDoc(customerDocRef(forgotCustomer.id), updated);
+      currentCustomer = { id: forgotCustomer.id, ...updated };
+      localStorage.setItem('zg_customer_email', currentCustomer.email);
+      forgotCustomer = null;
+      accountStep = 'menu'; accountError='';
+      renderDrawer(); render();
+      showToast('PIN updated — you\'re signed in');
+    }catch(e){ accountError='Could not update PIN — check your connection'; renderDrawer(); }
+  }
+
+  async function handleSaveAddress(){
+    const addr = document.getElementById('addrInput').value.trim();
+    try{
+      currentCustomer.savedAddress = addr;
+      const updated = { ...currentCustomer }; delete updated.id;
+      await setDoc(customerDocRef(currentCustomer.id), updated);
+      accountStep = 'menu';
+      renderDrawer();
+      showToast('Address saved');
+    }catch(e){ showToast('Could not save — check your connection'); }
+  }
+
+  function handleReorder(code){
+    const order = orders.find(o=>o.code===code);
+    if(!order) return;
+    let skipped = [];
+    order.items.forEach(oi=>{
+      const it = items.find(i=>i.id===oi.id);
+      if(!it || it.stock <= 0){ skipped.push(oi.name); return; }
+      const addQty = Math.min(oi.qty, it.stock);
+      cart[it.id] = (cart[it.id]||0) + addQty;
+      if(addQty < oi.qty) skipped.push(oi.name + ' (limited stock)');
+    });
+    panelMode = 'cart'; checkoutStep = 'cart';
+    render(); renderDrawer(); openPanel();
+    showToast(skipped.length ? `Added to cart — unavailable: ${skipped.join(', ')}` : 'Items added to cart');
   }
 
   function handleContinueToPayment(){
@@ -475,6 +856,7 @@ const settingsDocRef = doc(db, 'shop', 'settings');
       name, phone, address, note,
       items: orderItems,
       total: orderItems.reduce((s,i)=>s+i.price*i.qty,0),
+      customerEmail: currentCustomer ? currentCustomer.email : null
     };
     checkoutStep = 'payment';
     renderDrawer();
@@ -492,7 +874,7 @@ const settingsDocRef = doc(db, 'shop', 'settings');
       ...pendingOrder,
       status: 'New',
       paymentMethod: method,
-      paymentStatus: method === 'Cash' ? 'Cash on delivery' : 'Awaiting confirmation',
+      paymentStatus: 'Awaiting confirmation',
       time: new Date().toISOString()
     };
     orders.push(order);
@@ -500,6 +882,14 @@ const settingsDocRef = doc(db, 'shop', 'settings');
 
     await saveItems();
     await saveOrders();
+
+    if(currentCustomer && saveAddressChecked){
+      try{
+        currentCustomer.savedAddress = pendingOrder.address;
+        const updated = { ...currentCustomer }; delete updated.id;
+        await setDoc(customerDocRef(currentCustomer.id), updated);
+      }catch(e){ }
+    }
 
     cart = {};
     pendingOrder = null;

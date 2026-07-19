@@ -38,11 +38,11 @@
   .owner-gate .link-btn{ background:none; border:none; color:var(--forest); font-weight:600; font-size:12.5px; margin-top:10px; text-decoration:underline; }
   .owner-gate .error{ color:var(--tomato-dark); font-size:12.5px; font-weight:600; margin-top:8px; min-height:16px; }
 
-  .section-title{ display:flex; justify-content:space-between; align-items:center; margin: 30px 0 12px; }
+  .section-title{ display:flex; justify-content:space-between; align-items:center; margin: 30px 0 12px; flex-wrap:wrap; gap:8px; }
   .section-title h3{ margin:0; font-size:19px; }
   .small-btn{ border:1px solid var(--forest); background:#fff; color:var(--forest); padding:7px 13px; border-radius:8px; font-weight:700; font-size:13px; }
   .small-btn.solid{ background:var(--forest); color:#fff; }
-  .small-btn.warn{ border-color:var(--tomato); color:var(--tomato-dark); }
+  .btn-row{ display:flex; gap:8px; flex-wrap:wrap; }
 
   table{ width:100%; border-collapse:collapse; background:var(--panel); border-radius:12px; overflow:hidden; box-shadow:var(--shadow); }
   thead th{ text-align:left; background:var(--forest); color:#fff; font-size:12px; text-transform:uppercase; letter-spacing:.05em; padding:10px 12px; }
@@ -73,7 +73,6 @@
   .badge-completed{ background:#EFEDE3; color:var(--ink-soft); }
   .badge-pay-awaiting{ background:var(--tag); color:var(--tomato-dark); }
   .badge-pay-confirmed{ background:var(--leaf-light); color:#3D6428; }
-  .badge-pay-cash{ background:#EFEDE3; color:var(--ink-soft); }
 
   .toast{ position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(20px); background:var(--forest); color:#fff; padding:12px 20px; border-radius:10px; font-size:14px; font-weight:600; opacity:0; transition:all .25s ease; z-index:80; pointer-events:none; box-shadow:0 8px 20px rgba(0,0,0,0.25); }
   .toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
@@ -96,7 +95,29 @@
   .reports-cols{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
   @media(max-width:720px){ .reports-cols{ grid-template-columns:1fr; } }
 
+  .date-filter{ display:flex; gap:10px; align-items:flex-end; flex-wrap:wrap; background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:14px; box-shadow:var(--shadow); }
+  .date-filter .form-field{ margin:0; }
+  .date-filter input[type=date]{ font-family:'Space Mono'; font-size:13px; }
+  .date-filter .quick-range{ display:flex; gap:6px; flex-wrap:wrap; }
+  .date-filter .quick-range button{ border:1px solid var(--line); background:#fff; padding:6px 11px; border-radius:7px; font-size:12px; font-weight:600; color:var(--ink-soft); }
+  .date-filter .quick-range button.active{ background:var(--forest); color:#fff; border-color:var(--forest); }
+
+  .section-toggles{ display:flex; gap:14px; flex-wrap:wrap; margin:10px 0 4px; font-size:12.5px; color:var(--ink-soft); }
+  .section-toggles label{ display:flex; align-items:center; gap:5px; }
+
+  .customer-row{ display:flex; justify-content:space-between; align-items:center; padding:9px 0; border-bottom:1px solid #EFEDE3; font-size:13.5px; }
+  .customer-row:last-child{ border-bottom:none; }
+  .customer-row .cname{ font-weight:700; }
+  .customer-row .cmeta{ color:var(--ink-soft); font-size:12px; }
+  .customer-row .ctotal{ font-family:'Space Mono'; font-weight:700; color:var(--forest); }
+
   .qr-preview{ width:100px; height:100px; border-radius:8px; border:1px solid var(--line); }
+
+  @media print{
+    header.top, .small-btn, .del-btn, .add-item-card, #recaptcha-container, .toast, .date-filter .quick-range, input, select { display:none !important; }
+    body{ background:#fff; }
+    .report-panel, .stat-card, .order-card, table{ box-shadow:none; border:1px solid #ccc; }
+  }
 
   @media(max-width:640px){
     thead{ display:none; }
@@ -133,20 +154,19 @@ import { getAuth, RecaptchaVerifier, signInWithPhoneNumber, signOut } from "http
    2) Firebase console: Authentication -> Sign-in method -> enable "Phone".
    3) Project must be on the Blaze (pay-as-you-go) plan for real SMS to send.
    4) Set OWNER_PHONE to YOUR number in international format, e.g. "+919876543210".
-   5) The PIN itself is now stored in Firestore (shop/settings) so you can
-      change it from inside the app -- see "Change PIN" below once signed in.
-      DEFAULT_PIN is only used the very first time, before any PIN is saved.
+   5) The PIN itself is stored in Firestore (shop/settings) — change it from
+      inside the app under Change PIN once signed in.
    ========================================================================= */
 const firebaseConfig = {
-    apiKey: "AIzaSyDKy9R1cXcIFhzyYJTO5p-7pfreoLGrFdY",
-    authDomain: "zestygreens-from-aru.firebaseapp.com",
-    projectId: "zestygreens-from-aru",
-    storageBucket: "zestygreens-from-aru.firebasestorage.app",
-    messagingSenderId: "2139881949",
-    appId: "1:2139881949:web:ad34224d26043d2a8ab634",
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
 };
-const OWNER_PHONE = "+918056023410"; // <-- your phone number, international format
-const DEFAULT_PIN = "6666"; // <-- used only until a PIN is saved in Firestore
+const OWNER_PHONE = "+91XXXXXXXXXX";
+const DEFAULT_PIN = "1234";
 
 const firebaseApp = initializeApp(firebaseConfig);
 const db = getFirestore(firebaseApp);
@@ -160,12 +180,18 @@ const settingsDocRef = doc(db, 'shop', 'settings');
   let items = [];
   let orders = [];
   let settings = { upiId: '', ownerPin: DEFAULT_PIN };
-  let gateStep = 'pin'; // pin | otp | unlocked
+  let gateStep = 'pin';
   let gateError = '';
   let confirmationResult = null;
   let recaptchaVerifier = null;
   let sendingOtp = false;
   let pinChangeMsg = '';
+
+  let reportFrom = '';
+  let reportTo = '';
+  let showTopCustomers = true;
+  let showDaily = true;
+  let showTopItems = true;
 
   function withTimeout(promise, ms=6000){
     return Promise.race([
@@ -214,6 +240,34 @@ const settingsDocRef = doc(db, 'shop', 'settings');
     showToast._h = setTimeout(()=>t.classList.remove('show'), 2400);
   }
   function money(n){ return '₹' + n.toFixed(0); }
+  function iconHtml(it, px){
+    if(it.photo) return `<img src="${it.photo}" alt="${it.name}" style="width:${px}px;height:${px}px;object-fit:cover;border-radius:8px;vertical-align:middle;">`;
+    return `<span style="font-size:${px}px;line-height:1;">${it.emoji}</span>`;
+  }
+  const COMMON_EMOJIS = ['🍅','🥕','🥔','🧅','🍆','🥬','🥒','🌶️','🫑','🌽','🫛','🥦','🍋','🥭','🍇','🍎','🍊','🍌','🧄','🥑','🍓','🍍','🥝','🧅'];
+  let newItemPhoto = null;
+
+  function resizeImageToDataUrl(file, maxSize=120){
+    return new Promise((resolve, reject)=>{
+      const reader = new FileReader();
+      reader.onload = (e)=>{
+        const img = new Image();
+        img.onload = ()=>{
+          const canvas = document.createElement('canvas');
+          canvas.width = maxSize; canvas.height = maxSize;
+          const ctx = canvas.getContext('2d');
+          const side = Math.min(img.width, img.height);
+          const sx = (img.width - side) / 2, sy = (img.height - side) / 2;
+          ctx.drawImage(img, sx, sy, side, side, 0, 0, maxSize, maxSize);
+          resolve(canvas.toDataURL('image/jpeg', 0.75));
+        };
+        img.onerror = reject;
+        img.src = e.target.result;
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
 
   function render(){
     const main = document.getElementById('main');
@@ -274,25 +328,72 @@ const settingsDocRef = doc(db, 'shop', 'settings');
     }
   }
 
-  function computeReports(){
-    const totalOrders = orders.length;
-    const totalRevenue = orders.reduce((s,o)=>s+o.total,0);
+  // ---------------- Reports (date-range aware) ----------------
+  function ordersInRange(){
+    return orders.filter(o=>{
+      const d = (o.time||'').slice(0,10);
+      if(reportFrom && d < reportFrom) return false;
+      if(reportTo && d > reportTo) return false;
+      return true;
+    });
+  }
+
+  function computeReports(subset){
+    const totalOrders = subset.length;
+    const totalRevenue = subset.reduce((s,o)=>s+o.total,0);
     const avgOrder = totalOrders ? totalRevenue/totalOrders : 0;
     const statusCounts = { New:0, Preparing:0, Ready:0, Completed:0 };
-    orders.forEach(o=>{ if(statusCounts[o.status]!==undefined) statusCounts[o.status]++; });
+    subset.forEach(o=>{ if(statusCounts[o.status]!==undefined) statusCounts[o.status]++; });
     const itemTotals = {};
-    orders.forEach(o=>o.items.forEach(it=>{ itemTotals[it.name] = (itemTotals[it.name]||0) + it.qty; }));
+    subset.forEach(o=>o.items.forEach(it=>{ itemTotals[it.name] = (itemTotals[it.name]||0) + it.qty; }));
     const topItems = Object.entries(itemTotals).sort((a,b)=>b[1]-a[1]).slice(0,5);
     const dayTotals = {};
-    orders.forEach(o=>{ const day = (o.time||'').slice(0,10) || 'unknown'; dayTotals[day] = (dayTotals[day]||0) + o.total; });
-    const dailyRevenue = Object.entries(dayTotals).sort((a,b)=>a[0]<b[0]?-1:1).slice(-7);
+    subset.forEach(o=>{ const day = (o.time||'').slice(0,10) || 'unknown'; dayTotals[day] = (dayTotals[day]||0) + o.total; });
+    const dailyRevenue = Object.entries(dayTotals).sort((a,b)=>a[0]<b[0]?-1:1).slice(-14);
     const lowStockItems = items.filter(i=>i.stock<=5);
-    const pendingPayments = orders.filter(o=>o.paymentMethod==='UPI' && o.paymentStatus!=='Confirmed').length;
-    return { totalOrders, totalRevenue, avgOrder, statusCounts, topItems, dailyRevenue, lowStockItems, pendingPayments };
+    const pendingPayments = subset.filter(o=>o.paymentStatus!=='Confirmed').length;
+
+    const custMap = {};
+    subset.forEach(o=>{
+      const key = o.customerEmail || ('guest:'+o.phone);
+      if(!custMap[key]) custMap[key] = { name:o.name, email:o.customerEmail||'', orders:0, total:0 };
+      custMap[key].orders++; custMap[key].total += o.total;
+    });
+    const topCustomers = Object.values(custMap).sort((a,b)=>b.total-a.total).slice(0,8);
+
+    return { totalOrders, totalRevenue, avgOrder, statusCounts, topItems, dailyRevenue, lowStockItems, pendingPayments, topCustomers };
+  }
+
+  function setQuickRange(kind){
+    const today = new Date();
+    const fmt = (d)=>d.toISOString().slice(0,10);
+    if(kind==='7d'){ const from=new Date(today); from.setDate(from.getDate()-6); reportFrom=fmt(from); reportTo=fmt(today); }
+    else if(kind==='30d'){ const from=new Date(today); from.setDate(from.getDate()-29); reportFrom=fmt(from); reportTo=fmt(today); }
+    else if(kind==='month'){ reportFrom=fmt(new Date(today.getFullYear(), today.getMonth(), 1)); reportTo=fmt(today); }
+    else if(kind==='all'){ reportFrom=''; reportTo=''; }
+    render();
+  }
+
+  function exportCSV(){
+    const subset = ordersInRange();
+    const rows = [['Order Code','Date','Customer Name','Email','Phone','Items','Total','Order Status','Payment Method','Payment Status']];
+    subset.forEach(o=>{
+      rows.push([o.code, (o.time||'').slice(0,10), o.name, o.customerEmail||'', o.phone, o.items.map(i=>`${i.qty}x ${i.name}`).join('; '), o.total, o.status, o.paymentMethod, o.paymentStatus]);
+    });
+    const csv = rows.map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
+    const blob = new Blob([csv], {type:'text/csv'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `zestygreens-orders_${reportFrom||'all'}_to_${reportTo||'all'}.csv`;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast('CSV downloaded');
   }
 
   function renderReports(){
-    const r = computeReports();
+    const subset = ordersInRange();
+    const r = computeReports(subset);
     const maxQty = Math.max(1, ...r.topItems.map(x=>x[1]));
     const maxRev = Math.max(1, ...r.dailyRevenue.map(x=>x[1]));
 
@@ -301,24 +402,47 @@ const settingsDocRef = doc(db, 'shop', 'settings');
         <div class="bar-label">${name}</div>
         <div class="bar-track"><div class="bar-fill" style="width:${(qty/maxQty*100).toFixed(0)}%"></div></div>
         <div class="bar-value">${qty}</div>
-      </div>`).join('') : '<div class="empty-note" style="padding:10px 0;">No sales yet.</div>';
+      </div>`).join('') : '<div class="empty-note" style="padding:10px 0;">No sales in this range.</div>';
 
     const dailyHtml = r.dailyRevenue.length ? r.dailyRevenue.map(([day,total])=>`
       <div class="bar-row money">
         <div class="bar-label">${day}</div>
         <div class="bar-track"><div class="bar-fill" style="width:${(total/maxRev*100).toFixed(0)}%"></div></div>
         <div class="bar-value">${money(total)}</div>
-      </div>`).join('') : '<div class="empty-note" style="padding:10px 0;">No sales yet.</div>';
+      </div>`).join('') : '<div class="empty-note" style="padding:10px 0;">No sales in this range.</div>';
 
     const lowStockHtml = r.lowStockItems.length
-      ? r.lowStockItems.map(i=>`${i.emoji} ${i.name} (${i.stock} ${i.unit})`).join(' · ')
+      ? r.lowStockItems.map(i=>`${i.emoji||'🥗'} ${i.name} (${i.stock} ${i.unit})`).join(' · ')
       : 'All items are well stocked.';
 
+    const topCustomersHtml = r.topCustomers.length ? r.topCustomers.map(c=>`
+      <div class="customer-row">
+        <div><div class="cname">${c.name}</div><div class="cmeta">${c.email || 'Guest'} · ${c.orders} order${c.orders>1?'s':''}</div></div>
+        <div class="ctotal">${money(c.total)}</div>
+      </div>`).join('') : '<div class="empty-note" style="padding:10px 0;">No customer data in this range.</div>';
+
     return `
-      <div class="section-title"><h3>📊 Reports</h3></div>
+      <div class="section-title"><h3>📊 Reports</h3>
+        <div class="btn-row">
+          <button class="small-btn" id="exportCsvBtn">⬇️ Export CSV</button>
+          <button class="small-btn" id="printReportBtn">🖨️ Print / Save PDF</button>
+        </div>
+      </div>
+
+      <div class="date-filter">
+        <div class="form-field"><label>From</label><input type="date" id="reportFromInput" value="${reportFrom}"></div>
+        <div class="form-field"><label>To</label><input type="date" id="reportToInput" value="${reportTo}"></div>
+        <div class="quick-range">
+          <button data-range="7d">Last 7 days</button>
+          <button data-range="30d">Last 30 days</button>
+          <button data-range="month">This month</button>
+          <button data-range="all" class="${!reportFrom && !reportTo ? 'active' : ''}">All time</button>
+        </div>
+      </div>
+
       <div class="stat-grid">
-        <div class="stat-card"><div class="stat-label">Total orders</div><div class="stat-value">${r.totalOrders}</div></div>
-        <div class="stat-card"><div class="stat-label">Total revenue</div><div class="stat-value">${money(r.totalRevenue)}</div></div>
+        <div class="stat-card"><div class="stat-label">Orders in range</div><div class="stat-value">${r.totalOrders}</div></div>
+        <div class="stat-card"><div class="stat-label">Revenue in range</div><div class="stat-value">${money(r.totalRevenue)}</div></div>
         <div class="stat-card"><div class="stat-label">Avg. order value</div><div class="stat-value">${money(r.avgOrder)}</div></div>
         <div class="stat-card"><div class="stat-label">Payments to confirm</div><div class="stat-value">${r.pendingPayments}</div></div>
       </div>
@@ -328,10 +452,18 @@ const settingsDocRef = doc(db, 'shop', 'settings');
         <span class="badge badge-ready">Ready: ${r.statusCounts.Ready}</span>
         <span class="badge badge-completed">Completed: ${r.statusCounts.Completed}</span>
       </div>
-      <div class="reports-cols">
-        <div class="report-panel"><h4>Top selling items</h4>${topItemsHtml}</div>
-        <div class="report-panel"><h4>Revenue, last 7 active days</h4>${dailyHtml}</div>
+
+      <div class="section-toggles">
+        <label><input type="checkbox" id="toggleTopItems" ${showTopItems?'checked':''}> Top selling items</label>
+        <label><input type="checkbox" id="toggleDaily" ${showDaily?'checked':''}> Daily revenue</label>
+        <label><input type="checkbox" id="toggleTopCustomers" ${showTopCustomers?'checked':''}> Top customers</label>
       </div>
+
+      <div class="reports-cols">
+        ${showTopItems ? `<div class="report-panel"><h4>Top selling items</h4>${topItemsHtml}</div>` : ''}
+        ${showDaily ? `<div class="report-panel"><h4>Daily revenue</h4>${dailyHtml}</div>` : ''}
+      </div>
+      ${showTopCustomers ? `<div class="report-panel" style="margin-top:14px;"><h4>👥 Top customers by spend</h4>${topCustomersHtml}</div>` : ''}
       <div class="report-panel" style="margin-top:14px;">
         <h4>Stock to restock soon</h4>
         <div style="font-size:13.5px; color:var(--ink-soft);">${lowStockHtml}</div>
@@ -342,12 +474,12 @@ const settingsDocRef = doc(db, 'shop', 'settings');
   function renderOwner(){
     const invRows = items.map(it => `
       <tr>
-        <td data-label="Item"><div class="icell"><span class="emoji">${it.emoji}</span><span>${it.name}</span></div></td>
+        <td data-label="Item"><div class="icell">${iconHtml(it, 26)}<span>${it.name}</span></div></td>
         <td data-label="Category">${it.category}</td>
         <td data-label="Price (₹)"><input type="number" min="0" class="edit-price" data-id="${it.id}" value="${it.price}"></td>
         <td data-label="Stock"><input type="number" min="0" class="edit-stock" data-id="${it.id}" value="${it.stock}"></td>
         <td data-label="Unit"><input type="text" class="edit-unit" data-id="${it.id}" value="${it.unit}" style="width:60px;"></td>
-        <td data-label=""><button class="del-btn" data-del="${it.id}">Remove</button></td>
+        <td data-label=""><button class="del-btn" data-photo="${it.id}" style="color:var(--forest); margin-right:8px;">📷 Photo</button><input type="file" accept="image/*" capture="environment" class="photo-input" data-photo-input="${it.id}" style="display:none;"><button class="del-btn" data-del="${it.id}">Remove</button></td>
       </tr>`).join('');
 
     const statusOptions = ['New','Preparing','Ready','Completed'];
@@ -355,15 +487,16 @@ const settingsDocRef = doc(db, 'shop', 'settings');
       const itemsLine = o.items.map(x=>`${x.qty}× ${x.name}`).join(', ');
       const opts = statusOptions.map(s=>`<option value="${s}" ${s===o.status?'selected':''}>${s}</option>`).join('');
       const isUpi = o.paymentMethod === 'UPI';
-      const payBadge = isUpi
-        ? (o.paymentStatus === 'Confirmed' ? `<span class="badge badge-pay-confirmed">Payment confirmed</span>` : `<span class="badge badge-pay-awaiting">Awaiting payment confirmation</span>`)
-        : `<span class="badge badge-pay-cash">Cash on delivery</span>`;
-      const confirmBtn = (isUpi && o.paymentStatus !== 'Confirmed')
-        ? `<button class="small-btn solid" data-confirm-pay="${o.code}">✅ Confirm payment received</button>` : '';
+      const confirmed = o.paymentStatus === 'Confirmed';
+      const payBadge = confirmed
+        ? `<span class="badge badge-pay-confirmed">${isUpi ? 'UPI payment confirmed' : 'Cash payment confirmed'}</span>`
+        : `<span class="badge badge-pay-awaiting">${isUpi ? 'Awaiting UPI confirmation' : 'Awaiting cash confirmation'}</span>`;
+      const confirmBtn = !confirmed
+        ? `<button class="small-btn solid" data-confirm-pay="${o.code}">✅ Confirm ${isUpi ? 'UPI' : 'cash'} payment received</button>` : '';
       return `
       <div class="order-card">
         <div class="oc-top">
-          <div><span class="oc-code">${o.code}</span> · ${o.name} · ${o.phone}</div>
+          <div><span class="oc-code">${o.code}</span> · ${o.name} · ${o.phone}${o.customerEmail ? ' · <span class="mono" style="font-size:11px;">'+o.customerEmail+'</span>' : ' · guest'}</div>
           <select class="status-select" data-order="${o.code}">${opts}</select>
         </div>
         <div class="oc-items">${itemsLine} — <b class="mono">${money(o.total)}</b></div>
@@ -404,14 +537,28 @@ const settingsDocRef = doc(db, 'shop', 'settings');
       </table>
 
       <div class="section-title"><h3>➕ Add new item</h3></div>
-      <div class="add-item-card">
-        <div class="form-field"><label>Emoji</label><input id="newEmoji" placeholder="🥕" style="width:60px;"></div>
-        <div class="form-field"><label>Name</label><input id="newName" placeholder="e.g. Radish"></div>
-        <div class="form-field"><label>Category</label><input id="newCategory" placeholder="e.g. Vegetables"></div>
-        <div class="form-field"><label>Price (₹)</label><input id="newPrice" type="number" min="0" placeholder="30"></div>
-        <div class="form-field"><label>Stock</label><input id="newStock" type="number" min="0" placeholder="10"></div>
-        <div class="form-field"><label>Unit</label><input id="newUnit" placeholder="kg"></div>
-        <button class="small-btn solid" id="addItemBtn">Add item</button>
+      <div class="add-item-card" style="flex-direction:column; align-items:stretch;">
+        <div style="display:flex; gap:14px; flex-wrap:wrap; align-items:flex-start;">
+          <div style="min-width:220px;">
+            <label style="display:block; font-size:12.5px; font-weight:600; color:var(--ink-soft); margin-bottom:5px;">Icon — pick an emoji, or upload/scan a photo</label>
+            <div id="emojiPicker" style="display:flex; flex-wrap:wrap; gap:4px; max-width:260px; margin-bottom:8px;">
+              ${COMMON_EMOJIS.map(e=>`<button type="button" class="emoji-pick" data-emoji="${e}" style="font-size:20px; width:34px; height:34px; border:1px solid var(--line); background:#fff; border-radius:6px;">${e}</button>`).join('')}
+            </div>
+            <div style="display:flex; align-items:center; gap:10px;">
+              <span id="newIconPreview" style="font-size:30px; width:44px; height:44px; display:flex; align-items:center; justify-content:center; border:1px dashed var(--line); border-radius:8px;">🥕</span>
+              <input type="file" id="newPhotoInput" accept="image/*" capture="environment" style="font-size:12px; max-width:170px;">
+            </div>
+            <div style="font-size:11px; color:var(--ink-soft); margin-top:4px;">Uploading a photo replaces the emoji for this item.</div>
+          </div>
+          <div style="flex:1; display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end;">
+            <div class="form-field"><label>Name</label><input id="newName" placeholder="e.g. Radish"></div>
+            <div class="form-field"><label>Category</label><input id="newCategory" placeholder="e.g. Vegetables"></div>
+            <div class="form-field"><label>Price (₹)</label><input id="newPrice" type="number" min="0" placeholder="30"></div>
+            <div class="form-field"><label>Stock</label><input id="newStock" type="number" min="0" placeholder="10"></div>
+            <div class="form-field"><label>Unit</label><input id="newUnit" placeholder="kg"></div>
+            <button class="small-btn solid" id="addItemBtn">Add item</button>
+          </div>
+        </div>
       </div>
 
       <div class="section-title"><h3>🧾 Orders (${orders.length})</h3></div>
@@ -457,6 +604,26 @@ const settingsDocRef = doc(db, 'shop', 'settings');
         render();
       };
 
+      const exportBtn = document.getElementById('exportCsvBtn');
+      if(exportBtn) exportBtn.onclick = exportCSV;
+      const printBtn = document.getElementById('printReportBtn');
+      if(printBtn) printBtn.onclick = ()=>window.print();
+
+      const fromInput = document.getElementById('reportFromInput');
+      if(fromInput) fromInput.onchange = ()=>{ reportFrom = fromInput.value; render(); };
+      const toInput = document.getElementById('reportToInput');
+      if(toInput) toInput.onchange = ()=>{ reportTo = toInput.value; render(); };
+      document.querySelectorAll('[data-range]').forEach(b=>{
+        b.onclick = ()=>setQuickRange(b.dataset.range);
+      });
+
+      const t1 = document.getElementById('toggleTopItems');
+      if(t1) t1.onchange = ()=>{ showTopItems = t1.checked; render(); };
+      const t2 = document.getElementById('toggleDaily');
+      if(t2) t2.onchange = ()=>{ showDaily = t2.checked; render(); };
+      const t3 = document.getElementById('toggleTopCustomers');
+      if(t3) t3.onchange = ()=>{ showTopCustomers = t3.checked; render(); };
+
       document.querySelectorAll('.edit-price').forEach(inp=>{
         inp.onchange = async ()=>{
           const it = items.find(i=>i.id===inp.dataset.id);
@@ -485,6 +652,45 @@ const settingsDocRef = doc(db, 'shop', 'settings');
           await saveItems(); render(); showToast('Item removed');
         };
       });
+
+      document.querySelectorAll('[data-photo]').forEach(b=>{
+        b.onclick = ()=>{
+          const input = document.querySelector(`[data-photo-input="${b.dataset.photo}"]`);
+          if(input) input.click();
+        };
+      });
+      document.querySelectorAll('[data-photo-input]').forEach(inp=>{
+        inp.onchange = async ()=>{
+          const file = inp.files && inp.files[0];
+          if(!file) return;
+          try{
+            const dataUrl = await resizeImageToDataUrl(file, 120);
+            const it = items.find(i=>i.id===inp.dataset.photoInput);
+            if(it){ it.photo = dataUrl; await saveItems(); render(); showToast('Photo updated'); }
+          }catch(e){ showToast('Could not process that photo'); }
+        };
+      });
+
+      document.querySelectorAll('.emoji-pick').forEach(b=>{
+        b.onclick = ()=>{
+          newItemPhoto = null;
+          const preview = document.getElementById('newIconPreview');
+          if(preview) preview.textContent = b.dataset.emoji;
+          const photoInput = document.getElementById('newPhotoInput');
+          if(photoInput) photoInput.value = '';
+        };
+      });
+      const newPhotoInput = document.getElementById('newPhotoInput');
+      if(newPhotoInput) newPhotoInput.onchange = async ()=>{
+        const file = newPhotoInput.files && newPhotoInput.files[0];
+        if(!file) return;
+        try{
+          newItemPhoto = await resizeImageToDataUrl(file, 120);
+          const preview = document.getElementById('newIconPreview');
+          if(preview) preview.innerHTML = `<img src="${newItemPhoto}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;">`;
+        }catch(e){ showToast('Could not process that photo'); }
+      };
+
       const addBtn = document.getElementById('addItemBtn');
       if(addBtn) addBtn.onclick = handleAddItem;
 
@@ -531,7 +737,9 @@ const settingsDocRef = doc(db, 'shop', 'settings');
   }
 
   async function handleAddItem(){
-    const emoji = document.getElementById('newEmoji').value.trim() || '🥗';
+    const preview = document.getElementById('newIconPreview');
+    const emoji = (!newItemPhoto && preview) ? preview.textContent.trim() : '🥗';
+    const photo = newItemPhoto;
     const name = document.getElementById('newName').value.trim();
     const category = document.getElementById('newCategory').value.trim() || 'Vegetables';
     const price = parseFloat(document.getElementById('newPrice').value) || 0;
@@ -539,7 +747,10 @@ const settingsDocRef = doc(db, 'shop', 'settings');
     const unit = document.getElementById('newUnit').value.trim() || 'kg';
     if(!name){ showToast('Please enter an item name'); return; }
     const id = 'i' + Date.now();
-    items.push({ id, name, emoji, category, price, stock, unit });
+    const newItem = { id, name, emoji, category, price, stock, unit };
+    if(photo) newItem.photo = photo;
+    items.push(newItem);
+    newItemPhoto = null;
     await saveItems();
     render();
     showToast(name + ' added to shop');

@@ -114,9 +114,14 @@
   .qr-preview{ width:100px; height:100px; border-radius:8px; border:1px solid var(--line); }
 
   @media print{
-    header.top, .small-btn, .del-btn, .add-item-card, #recaptcha-container, .toast, .date-filter .quick-range, input, select { display:none !important; }
+    header.top, .no-print, .small-btn, #recaptcha-container, .toast, .date-filter { display:none !important; }
+    .print-only-label{ display:block !important; font-weight:700; margin:-6px 0 14px; }
     body{ background:#fff; }
+    main{ padding-top:10px; }
     .report-panel, .stat-card, .order-card, table{ box-shadow:none; border:1px solid #ccc; }
+  }
+  @media not print{
+    .print-only-label{ display:none; }
   }
 
   @media(max-width:640px){
@@ -163,10 +168,9 @@ const firebaseConfig = {
     projectId: "zestygreens-from-aru",
     storageBucket: "zestygreens-from-aru.firebasestorage.app",
     messagingSenderId: "2139881949",
-    appId: "1:2139881949:web:ad34224d26043d2a8ab634"
+    appId: "1:2139881949:web:ad34224d26043d2a8ab634",
 };
 const OWNER_PHONE = "+918056023410";
-console.log("PHONE CHECK:", JSON.stringify(OWNER_PHONE), OWNER_PHONE.length);
 const DEFAULT_PIN = "0202";
 
 const firebaseApp = initializeApp(firebaseConfig);
@@ -422,7 +426,19 @@ const settingsDocRef = doc(db, 'shop', 'settings');
         <div class="ctotal">${money(c.total)}</div>
       </div>`).join('') : '<div class="empty-note" style="padding:10px 0;">No customer data in this range.</div>';
 
+    const orderRowsHtml = subset.length ? [...subset].reverse().map(o=>`
+      <tr>
+        <td data-label="Code" class="mono">${o.code}</td>
+        <td data-label="Date">${(o.time||'').slice(0,10)}</td>
+        <td data-label="Customer">${o.name}${o.customerEmail ? ' ('+o.customerEmail+')' : ' (guest)'}</td>
+        <td data-label="Items">${o.items.map(i=>`${i.qty}× ${i.name}`).join(', ')}</td>
+        <td data-label="Total" class="mono">${money(o.total)}</td>
+        <td data-label="Status">${o.status}</td>
+        <td data-label="Payment">${o.paymentMethod} · ${o.paymentStatus}</td>
+      </tr>`).join('') : `<tr><td colspan="7" style="text-align:center; color:var(--ink-soft);">No orders in this range.</td></tr>`;
+
     return `
+      <div id="reportsSection">
       <div class="section-title"><h3>📊 Reports</h3>
         <div class="btn-row">
           <button class="small-btn" id="exportCsvBtn">⬇️ Export CSV</button>
@@ -440,6 +456,7 @@ const settingsDocRef = doc(db, 'shop', 'settings');
           <button data-range="all" class="${!reportFrom && !reportTo ? 'active' : ''}">All time</button>
         </div>
       </div>
+      <p class="print-only-label" style="display:none;">Report period: ${reportFrom || 'Start'} to ${reportTo || 'Today'}</p>
 
       <div class="stat-grid">
         <div class="stat-card"><div class="stat-label">Orders in range</div><div class="stat-value">${r.totalOrders}</div></div>
@@ -468,6 +485,15 @@ const settingsDocRef = doc(db, 'shop', 'settings');
       <div class="report-panel" style="margin-top:14px;">
         <h4>Stock to restock soon</h4>
         <div style="font-size:13.5px; color:var(--ink-soft);">${lowStockHtml}</div>
+      </div>
+
+      <div class="report-panel" style="margin-top:14px;">
+        <h4>Orders in this range (${subset.length})</h4>
+        <table>
+          <thead><tr><th>Code</th><th>Date</th><th>Customer</th><th>Items</th><th>Total</th><th>Status</th><th>Payment</th></tr></thead>
+          <tbody>${orderRowsHtml}</tbody>
+        </table>
+      </div>
       </div>
     `;
   }
@@ -507,12 +533,13 @@ const settingsDocRef = doc(db, 'shop', 'settings');
     }).join('');
 
     return `
-      <div class="section-title">
+      <div class="section-title no-print">
         <h3>Manage Shop</h3>
         <button class="small-btn" id="lockOwner">Sign out</button>
       </div>
       ${renderReports()}
 
+      <div class="no-print">
       <div class="section-title"><h3>💳 Payment settings</h3></div>
       <div class="settings-card">
         <div class="form-field">
@@ -564,6 +591,7 @@ const settingsDocRef = doc(db, 'shop', 'settings');
 
       <div class="section-title"><h3>🧾 Orders (${orders.length})</h3></div>
       ${orderCards || '<div class="empty-state">No orders yet.</div>'}
+      </div>
     `;
   }
 

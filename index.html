@@ -155,12 +155,13 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import { getFirestore, doc, getDoc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+    apiKey: "AIzaSyDKy9R1cXcIFhzyYJTO5p-7pfreoLGrFdY",
+    authDomain: "zestygreens-from-aru.firebaseapp.com",
+    projectId: "zestygreens-from-aru",
+    storageBucket: "zestygreens-from-aru.firebasestorage.app",
+    messagingSenderId: "2139881949",
+    appId: "1:2139881949:web:ad34224d26043d2a8ab634",
+    measurementId: "G-ZM60QDBKR2"
 };
 
 const firebaseApp = initializeApp(firebaseConfig);
@@ -168,6 +169,8 @@ const db = getFirestore(firebaseApp);
 const itemsDocRef = doc(db, 'shop', 'items');
 const ordersDocRef = doc(db, 'shop', 'orders');
 const settingsDocRef = doc(db, 'shop', 'settings');
+
+
 function customerDocRef(id){ return doc(db, 'customers', id); }
 
 (function(){
